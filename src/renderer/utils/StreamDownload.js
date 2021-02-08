@@ -1,7 +1,6 @@
 import * as path from 'path'
 import * as fs from 'fs'
-import fetch  from 'node-fetch'
-import progress  from 'progress-stream'
+import fetch from 'node-fetch'
 import { mapMutations, mapActions } from 'vuex'
 const https = require('https')
 const http = require('http')
@@ -14,14 +13,9 @@ function StreamDownload () {
 }
 
 // 下载进度
-StreamDownload.prototype.showProgress = function (received, total, callback) {
-  const body = {
-    // "percentage": (received * 100) / total,
-    'total': total,
-    'received': received
-  }
+StreamDownload.prototype.showProgress = function (received, callback) {
   // 用回调显示到界面上
-  callback!= undefined && callback('progress', body)
+  callback != undefined && callback('progress', received)
 }
 
 // 下载过程
@@ -31,10 +25,6 @@ StreamDownload.prototype.downloadFile = function (patchUrl, baseDir, callback) {
   let httpType = patchUrl.substring(0, patchUrl.indexOf('://'))
   let fileType = patchUrl.substring(patchUrl.lastIndexOf('.'))
   const downloadFile = new Date().getTime().toString() + fileType
-
-  let receivedBytes = 0
-  let totalBytes = 0
-  let percentage = 0
 
   let option = {
     // hostname: 'hoxiete.cn',
@@ -51,53 +41,26 @@ StreamDownload.prototype.downloadFile = function (patchUrl, baseDir, callback) {
   }
   // 判断url选择http模块
   const httpMethod = eval(httpType == 'http' ? http : https)
-  fetch(patchUrl,option).then(req => {
+  fetch(patchUrl, option).then(req => {
     debugger
+    const body = req.body
     const out = fs.createWriteStream(path.join(baseDir, downloadFile))
-    // const size = Number(res.headers['content-length']);
-    // const length = parseInt(size / SINGLE); 
-    // for (let i=0; i<length; i++) {
-    //     let start = i * SINGLE;
-    //     let end = i == length ? (i + 1) * SINGLE - 1 : size - 1;
-    //     request({
-    //         method: 'GET',
-    //         uri: SOURCE,
-    //         headers: {
-    //             'range': `bytes=${start}-${end}`
-    //         },
-    //     }).on('response', (resp) => {
-    //         const range = resp.headers['content-range'];
-    //         const match = /bytes ([0-9]*)-([0-9]*)/.exec(range);
-    //         start = match[1];
-    //         end = match[2];
-    //     }).pipe(fs.createWriteStream(file, {start, end}));
-    debugger
     let skipProcess = req.headers['content-length'] === undefined
-    const body = {
-      'percentage': 0,
-      'total': !skipProcess ? parseInt(req.headers['content-length'], 10) : 1,
-      'received': 0
-    }
-    callback!= undefined && callback('start', body)
-    req.pipe(out)
+    let total = !skipProcess ? parseInt(req.headers['content-length'], 10) : 1
+    callback != undefined && callback('start', total)
+    body.pipe(out)
 
-    req.on('response', (data) => {
-      // 更新总文件字节大小
-
-    })
-
-    req.on('data', (chunk) => {
+    body.on('data', (chunk) => {
       // 更新下载的文件块字节大小
-      // receivedBytes += chunk.length;
-      skipProcess || this.showProgress(chunk.length, totalBytes, callback)
+      skipProcess || this.showProgress(chunk.length, callback)
     })
-    req.on('error', (err) => {
-      callback!= undefined && callback('error', err)
+    body.on('error', (err) => {
+      callback != undefined && callback('error', err)
     })
 
-    req.on('end', () => {
+    body.on('end', () => {
       // TODO: 检查文件，部署文件，删除文件
-      callback!= undefined && callback('finished', skipProcess)
+      callback != undefined && callback('finished', skipProcess)
     })
   })
 }

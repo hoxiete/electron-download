@@ -42,8 +42,8 @@
               </el-col>
               <el-col :span="4">
                 <el-button
-                  style="float: right; padding: 3px 0"
-                  type="text"
+                  style="float: right; padding: 8px 8px"
+                  type="success"
                   @click="handleClick"
                   >批量下载</el-button
                 >

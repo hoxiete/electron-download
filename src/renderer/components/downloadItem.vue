@@ -49,13 +49,13 @@ export default {
           async (status, body) => {
             new Promise((resolve, reject) => {
               if (status == "start") {
-                this.total = body.total;
-                this.addTotal(body.total);
+                this.total = body;
+                this.addTotal(body);
               } else if (status === "progress") {
                 // 显示进度
                 // debugger
-                this.addCurrent(body.received);
-                this.currentSize += body.received;
+                this.addCurrent(body);
+                this.currentSize += body;
                 // thispercent = body.percentage;
                 this.percent = Math.round(
                   (this.currentSize * 100) / this.total,
