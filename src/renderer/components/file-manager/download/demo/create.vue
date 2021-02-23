@@ -1,6 +1,6 @@
 <template>
-  <el-dialog title="新建下载" center :visible="showCreate" :show-close="false">
-    <el-form>
+  <el-dialog class="create-download" title="新建下载" center :visible="showCreate" :show-close="false">
+    <el-form class="form">
       <el-card
         v-loading="loading"
         element-loading-text="拼命加载中"
@@ -30,8 +30,9 @@
           </el-alert> -->
         </el-form-item>
         <el-table
-          class="toscroll"
+          class="table"
           ref="multipleTable"
+          :height="'80%'"
           :data="resourceData"
           tooltip-effect="dark"
           label-position="center"
@@ -208,13 +209,6 @@ export default {
 }
 </script>
 <style scoped>
-.box-card {
-  height: 500px;
-}
-.toscroll {
-  overflow-y: scroll;
-  height: 400px;
-}
 .downloadPath {
   margin-top: 20px;
 }

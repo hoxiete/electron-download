@@ -10,7 +10,8 @@
     <el-table
       class="toscroll"
       ref="singleTable"
-      :data="allStrategy.concat([{name:'',strategy:'',new:true}])"
+      :height="'80%'"
+      :data="allStrategy.concat([{ name: '', strategy: '', new: true }])"
       @row-click="rowClick"
       :row-class-name="tableRowClassName"
       style="width: 100%"
@@ -50,42 +51,54 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
-            <el-row>
-              <el-col class="windows-icon-bg" :span="9">
-                <i
-                  v-show="scope.$index === editRowIndex && scope.row.name!='' && scope.row.strategy!=''"
-                  @click.stop="
-                    editRowIndex === addRowIndex
-                      ? addOneStrategy(scope.row)
-                      : editOneStrategy(scope.row)
-                  "
-                  class="el-icon-check"
-                />
-                <i
-                  v-show="scope.$index !== editRowIndex && scope.row.name!='' && scope.row.strategy!=''"
-                  @click.stop="() => (editRowIndex = scope.$index)"
-                  class="el-icon-edit-outline"
-                />
-              </el-col>
-              <el-col :span="6"> </el-col>
-              <el-col
-                class="windows-icon-bg"
-                style="margin-left: 10px"
-                :span="9"
+          <el-row>
+            <el-col class="windows-icon-bg" :span="9">
+              <i
+                v-show="
+                  scope.$index === editRowIndex &&
+                  scope.row.name != '' &&
+                  scope.row.strategy != ''
+                "
+                @click.stop="
+                  editRowIndex === addRowIndex
+                    ? addOneStrategy(scope.row)
+                    : editOneStrategy(scope.row)
+                "
+                class="el-icon-check"
+              />
+              <i
+                v-show="
+                  scope.$index !== editRowIndex &&
+                  scope.row.name != '' &&
+                  scope.row.strategy != ''
+                "
+                @click.stop="() => (editRowIndex = scope.$index)"
+                class="el-icon-edit-outline"
+              />
+            </el-col>
+            <el-col :span="6"> </el-col>
+            <el-col class="windows-icon-bg" style="margin-left: 10px" :span="9">
+              <el-popconfirm
+                confirm-button-text="确定"
+                cancel-button-text="取消"
+                icon="el-icon-info"
+                icon-color="red"
+                placement="top"
+                title="确认删除该策略？"
+                @confirm="delOneStrategy(scope)"
               >
-                <el-popconfirm
-                  confirm-button-text="确定"
-                  cancel-button-text="取消"
-                  icon="el-icon-info"
-                  icon-color="red"
-                  placement="top"
-                  title="确认删除该策略？"
-                  @confirm="delOneStrategy(scope)"
-                >
-                  <i slot="reference" v-show="!scope.row.new || (addRowIndex === editRowIndex && addRowIndex!='')"  @click.stop class="el-icon-close" />
-                </el-popconfirm>
-              </el-col>
-            </el-row>
+                <i
+                  slot="reference"
+                  v-show="
+                    !scope.row.new ||
+                    (addRowIndex === editRowIndex && addRowIndex != '')
+                  "
+                  @click.stop
+                  class="el-icon-close"
+                />
+              </el-popconfirm>
+            </el-col>
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -150,6 +163,7 @@ export default {
       }
     },
     rowClick (row, column, event) {
+      if(row.new) return
       this.clickCurrentRow = row;
     },
     addOneStrategy (row) {
@@ -206,10 +220,6 @@ export default {
   margin: 0 auto;
   /* overflow-y: scroll; */
   /* height: 100%; */
-}
-.toscroll {
-  overflow-y: scroll;
-  height: 48%;
 }
 .windows-icon-bg {
   display: inline-block;

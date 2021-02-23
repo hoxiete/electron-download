@@ -25,6 +25,56 @@
     flex: 1;
   }
 }
+
 .select-row {
   background-color: #3ff3f3 !important;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar {
+  /*width: 0;宽度为0隐藏*/
+  width: 5px;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  background: #eee;
+}
+
+.create-download {
+
+  // height: 100%;
+  .el-dialog {
+    height: 70%;
+
+    .el-dialog__header {
+      height: 0%;
+    }
+
+    .el-dialog__body {
+      height: 70%;
+
+      .form {
+        height: 94%;
+
+        .box-card {
+          height: 95%;
+
+          .el-card__body {
+            height: 100%;
+
+            .table {
+              height: 70%;
+            }
+          }
+        }
+      }
+    }
+  }
 }
