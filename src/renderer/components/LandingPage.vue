@@ -78,7 +78,7 @@
 <script>
 import { searchUrl } from '@/utils/download'
 import { validateURL } from '@/utils/validate'
-import DownloadItem from './downloadItem'
+import DownloadItem from './PreDownloadItem'
 import streamDownload from "@/utils/StreamDownload.js";
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 export default {

@@ -23,6 +23,15 @@ let mainConfig = {
   ],
   module: {
     rules: [
+      {
+        test: /\.(tsx|ts)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'awesome-typescript-loader',
+          },
+        ],
+      },
       // {
       //   test: /\.(js)$/,
       //   enforce: 'pre',
@@ -70,6 +79,7 @@ let mainConfig = {
   resolve: {
     alias: {
       '@config': resolve('config'),
+      '@main': resolve('src/main')
     },
     extensions: ['.tsx', '.ts', '.js', '.json', '.node']
   },

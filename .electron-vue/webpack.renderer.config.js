@@ -51,6 +51,15 @@ let rendererConfig = {
       //   }
       // },
       {
+        test: /\.(tsx|ts)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'awesome-typescript-loader',
+          },
+        ],
+      },
+      {
         test: /\.scss$/,
         use: ['vue-style-loader', 'css-loader', 'sass-loader']
       },
@@ -194,7 +203,7 @@ let rendererConfig = {
       '@': resolve('src/renderer'),
       'vue$': 'vue/dist/vue.esm.js'
     },
-    extensions: ['.js', '.vue', '.json', '.css', '.node']
+    extensions: ['.js','.ts', '.vue', '.json', '.css', '.node']
   },
   target: 'electron-renderer'
 }

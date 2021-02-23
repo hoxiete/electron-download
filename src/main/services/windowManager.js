@@ -106,4 +106,5 @@ function initWindow () {
     return createMainWindow()
   }
 }
+export {mainWindow as win} 
 export default initWindow

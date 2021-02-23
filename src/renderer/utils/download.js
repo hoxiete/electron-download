@@ -3,26 +3,41 @@ var http = require('https')
 // var axios = require('axios');
 var cheerio = require('cheerio')
 // url 获取信息的页面部分地址
+import fs from 'fs'
 var url = ''
 
-export function searchUrl (url) {
+export function getHtml4Url (url) {
   return new Promise((resolve, reject) => {
-    http.get(url, function (res) { // 通过get方法获取对应地址中的页面信息
-      var chunks = []
-      var size = 0
-      res.on('data', function (chunk) { // 监听事件 传输
-        chunks.push(chunk)
-        size += chunk.length
-      })
-      res.on('end', function () { // 数据传输完
-        var data = Buffer.concat(chunks, size)
-        var html = data.toString()
-        var $ = cheerio.load(html) // cheerio模块开始处理 DOM处理
-        var srcList = $('.nthread_firstpostbox img.zoom').map(function (i, el) { return $(this).attr('src') }).toArray()
-        return resolve(srcList)
-      })
+        resolve(fs.readFileSync('D://crawler/html.txt'))
+        // fs.writeFileSync('D://crawler/html.txt',html)
+  
+    
     })
-  })
+  // return new Promise((resolve, reject) => {
+  //   http.get(url, function (res) { // 通过get方法获取对应地址中的页面信息
+  //     debugger
+  //     var chunks = []
+  //     var size = 0
+  //     res.on('data', function (chunk) { // 监听事件 传输
+  //       chunks.push(chunk)
+  //       size += chunk.length
+  //     })
+  //     res.on('end', function () { // 数据传输完
+  //       var data = Buffer.concat(chunks, size)
+  //       var html = data.toString()
+  //       var $ = cheerio.load(html) // cheerio模块开始处理 DOM处理
+  //       // var srcList = $('.nthread_firstpostbox img.zoom').map(function (i, el) { return $(this).attr('src') }).toArray()
+  //       // return resolve(srcList)
+  //       return resolve(html)
+  //     })
+  //   })
+  // })
+}
+
+export function parseHtml4Strategy(html,strategy){
+  var $ = cheerio.load(html)
+  var srcList = $(strategy).map(function (i, el) { return $(this).attr('src') }).toArray()
+  return srcList
 }
 
 function download4Url (url, callback) {

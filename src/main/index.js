@@ -4,10 +4,12 @@ import { app } from 'electron'
 import initWindow from './services/windowManager'
 import DisableButton from './config/DisableButton'
 import electronDevtoolsInstaller, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { registerFileManagerService } from './file-manager'
 
 function onAppReady () {
   initWindow()
   DisableButton.Disablef12()
+  registerFileManagerService()
   if (process.env.NODE_ENV === 'development') {
     electronDevtoolsInstaller(VUEJS_DEVTOOLS)
       .then((name) => console.log(`installed: ${name}`))

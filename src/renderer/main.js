@@ -5,6 +5,7 @@ import store from './store'
 // 引用element
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import './components/file-manager/download/demo/style.module.less'
 
 Vue.config.productionTip = false
 
