@@ -12,13 +12,22 @@
     <div style="-webkit-app-region: drag" class="title"></div>
     <div class="controls-container">
       <div class="windows-icon-bg">
-        <el-popover placement="bottom" width="400" trigger="click">
-          <downloadIndex />
+        <el-popover
+          placement="bottom"
+          width="400"
+          trigger="manual"
+          v-model="visible"
+        >
+          <downloadIndex
+          />
           <template slot="reference">
-            <el-badge :hidden="count<=0" :value="count" class="icon-size">
-              <el-button type="info" icon="el-icon-message" circle
-                ></el-button
-              >
+            <el-badge :hidden="count <= 0" :value="count" class="icon-size">
+              <el-button
+                type="info"
+                icon="el-icon-message"
+                circle
+                @click="visible=!visible"
+              ></el-button>
             </el-badge>
           </template>
         </el-popover>
@@ -35,7 +44,7 @@
 </template>
 
 <script>
-import downloadIndex from '@/components/file-manager/download/demo/index.vue'
+import downloadIndex from '@/components/file-manager/download/index.vue'
 import {
   clearDownloadDone,
   getDownloadData,
@@ -46,17 +55,19 @@ import {
   openFileInFolder,
   pauseOrResume,
   removeDownloadItem,
-} from '../../components/file-manager/ipc-renderer'
+} from '@/components/file-manager/ipc-renderer'
 export default {
   data: () => ({
-    count:0
+    count: 0,
+    visible: false,
+    triggerType: 'manual',
+    permanent: false
   }),
 
   components: { downloadIndex },
   created () {
-   listenerNewDownloadItem((event, item) => {
-      // this.handleOpenCreate()
-      this.count+=1
+    listenerNewDownloadItem((event, item) => {
+      this.count += 1
     })
     // listenerDownloadItemUpdate((event, item) => {
     //   this.handleUpdateData(item)
@@ -67,10 +78,10 @@ export default {
     // })
   },
 
-  mounted () { },
+  mounted () {
+  },
 
   methods: {
-    
   }
 };
 </script>
@@ -113,7 +124,6 @@ export default {
         width: 40px;
         height: 15px;
       }
-
     }
     .windows-icon-bg:hover {
       background-color: rgba(182, 182, 182, 0.2);

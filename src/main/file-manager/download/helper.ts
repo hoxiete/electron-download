@@ -10,8 +10,11 @@ import {
 import { getBase64Bytes, getFileIcon, getFileName, pathJoin, uuidV4 } from '../util'
 import path from 'path';
 
-
-const generateName = (url: string): string => {
+/**
+ * 根据url定义文件名
+ * @param url - 链接
+ */
+export const generateName = (url: string): string => {
   return url.substring(url.lastIndexOf('/') + 1)
 }
 
@@ -131,18 +134,18 @@ export const addDownloadItem = async ({
   item,
   downloadIds,
   data,
-  // newDownloadItem
+  newSingleDownloadItem
 }: IAddDownloadItem): Promise<IDownloadFile> => {
   const id = downloadIds.shift() || ''
   // 判断下载项是否存在，存在先移除，再添加
   const itemIndex = getDownloadIndex(data, id)
   const fileUrl = item.getURL()
-  const fileName = getFileName(generateName(fileUrl) || '', item.getFilename())
+  const fileName = getFileName(newSingleDownloadItem?.fileName || generateName(fileUrl), item.getFilename())
   const startTime = item.getStartTime() * 1000
   const totalBytes = getBase64Bytes(fileUrl) || item.getTotalBytes()
 
   let fileId = uuidV4()
-  const savePath = pathJoin(getLastDownloadPathStore() || app.getPath('downloads'),fileName)
+  const savePath = newSingleDownloadItem?.path || pathJoin(getLastDownloadPathStore() || app.getPath('downloads'),fileName)
 
   if (itemIndex > -1) {
     const newItems = data.splice(itemIndex, 1)
@@ -177,7 +180,7 @@ export const addDownloadItem = async ({
   data.unshift(downloadItem)
   setDownloadStore(data)
   // 清空缓存数据
-  // newDownloadItem = null
+  newSingleDownloadItem = null
 
   return downloadItem
 }

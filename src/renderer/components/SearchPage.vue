@@ -7,22 +7,6 @@
           <el-form-item label="网址">
             <el-input v-model="form.url"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="下载路径">
-            <el-select v-model="resourceData" placeholder="请选择">
-              <el-option label="123" :value="123"></el-option>
-            </el-select>
-            <el-button type="primary" @click="editSavePath"
-              ><i class="el-icon-edit"></i
-            ></el-button>
-          </el-form-item>
-          <el-form-item label="爬取规则">
-            <el-select v-model="resourceData" placeholder="请选择">
-              <el-option label="123" :value="123"></el-option>
-            </el-select>
-            <el-button type="primary" @click="editStrategy"
-              ><i class="el-icon-edit"></i
-            ></el-button>
-          </el-form-item> -->
           <el-form-item>
             <el-button
               type="primary"
@@ -57,9 +41,8 @@
 <script>
 // import { searchUrl } from '@/utils/download'
 import { validateURL } from '@/utils/validate'
-import CreateModal from './file-manager/download/demo/create'
-import EditStrategy from './file-manager/download/demo/EditStrategy'
-import streamDownload from "@/utils/StreamDownload.js";
+import CreateModal from './file-manager/download/create'
+import EditStrategy from './file-manager/download/EditStrategy'
 
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 export default {

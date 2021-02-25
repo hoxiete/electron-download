@@ -69,7 +69,7 @@ import {
   openFileDialog,
   setLastDownloadPath,
   getLastDownloadPath
-} from '../../ipc-renderer'
+} from '../ipc-renderer'
 
 export default {
   props: {
@@ -162,19 +162,6 @@ export default {
       selectItem.forEach(async (item, index) => await newDownloadFile({ path: this.formData.path, url: item.url, fileName: this.generateName(item.url) }))
       setLastDownloadPath(this.formData.path)
       this.handleCancel()
-      // const item = await newDownloadFile(this.formData)
-      // if (!item) return
-      // this.$confirm(`已存在${item.fileName}文件，确认覆盖？`, '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      //   retryDownloadFile(item)
-      //   this.$message({
-      //     type: 'success',
-      //     message: '覆盖成功!'
-      //   });
-      // })
     },
     // 关闭新建对话框
     handleCancel () {

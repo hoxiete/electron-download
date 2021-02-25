@@ -22,5 +22,4 @@
 </script>
 
 <style>
-body {background-image:url('../../static/backimage.jpg');}
 </style>

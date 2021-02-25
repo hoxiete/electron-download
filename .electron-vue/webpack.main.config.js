@@ -79,7 +79,7 @@ let mainConfig = {
   resolve: {
     alias: {
       '@config': resolve('config'),
-      '@main': resolve('src/main')
+      '@': resolve('src/main')
     },
     extensions: ['.tsx', '.ts', '.js', '.json', '.node']
   },

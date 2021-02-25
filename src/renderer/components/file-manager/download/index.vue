@@ -1,10 +1,9 @@
 <template>
   <div class="container">
-    <div class="title">下载管理器</div>
-    <DownloadManagerMenu
-      :onCreate="handleOpenCreate"
-      :onClear="handleClearDone"
-    />
+    <div class="title">
+        <div style="margin-left: -15px;">下载管理器</div>
+    </div>
+    <DownloadManagerMenu :onClear="handleClearDone"/>
 
     <div class="main" :onScroll="handleScroll">
       <template v-for="(item, index) in downloadItem">
@@ -20,13 +19,10 @@
       </template>
     </div>
   </div>
-
-  <!-- <CreateModal show="{show}" onClose="{handleCloseCreate}" /> -->
 </template>
 <script>
-// import CreateModal from './create'
-import DownloadManagerMenu from '../../components/manager-menu'
-import DownloadItem from '../../components/download-item'
+import DownloadManagerMenu from '../components/manager-menu'
+import DownloadItem from '../components/download-item'
 import {
   clearDownloadDone,
   getDownloadData,
@@ -37,11 +33,12 @@ import {
   openFileInFolder,
   pauseOrResume,
   removeDownloadItem,
-} from '../../ipc-renderer'
+} from '../ipc-renderer'
 // import { IDownloadFile } from '../../../../../../app/file-manager/interface'
 export default {
+  props: {
+  },
   components: {
-    // CreateModal,
     DownloadManagerMenu, DownloadItem
   },
   computed: {
@@ -65,6 +62,7 @@ export default {
   data () {
     return {
       show: false,
+      lock: false,
       downloadItem: [],
       hasMore: true,
       downloadItemRef: [],
@@ -115,14 +113,15 @@ export default {
     },
 
     // 打开新建下载弹框
-    handleOpenCreate () {
-      this.show = true
-    },
+    // handleOpenCreate () {
+    //   debugger
+    //   this.show = true
+    // },
 
     // 关闭新建下载弹框
-    handleCloseCreate () {
-      this.show = false
-    },
+    // handleCloseCreate () {
+    //   this.show = false
+    // },
 
     // 暂停或恢复下载
     async handlePauseOrResume (item) {

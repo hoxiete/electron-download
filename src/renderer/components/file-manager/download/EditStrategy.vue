@@ -118,7 +118,7 @@ import {
   getDownloadPath,
   newDownloadFile,
   openFileDialog,
-} from '../../ipc-renderer'
+} from '../ipc-renderer'
 
 export default {
   props: {

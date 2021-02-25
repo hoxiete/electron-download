@@ -56,7 +56,7 @@ export interface IAddDownloadItem {
   item: DownloadItem
   downloadIds: string[]
   data: IDownloadFile[]
-  // newDownloadItem: INewDownloadFile | null
+  newSingleDownloadItem: INewDownloadFile | null
 }
 
 export interface IUpdateDownloadItem {

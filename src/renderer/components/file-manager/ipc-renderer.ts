@@ -44,7 +44,7 @@ export const openFile = (path: string): Promise<string> => ipcRendererInvoke('op
  * 打开下载管理器
  */
 export const openDownloadManager = (): void => {
-  ipcRendererInvoke('openDownloadManager', '/download-manager/demo')
+  ipcRendererInvoke('openDownloadManager', '/download-manager')
 }
 
 /**

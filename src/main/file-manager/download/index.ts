@@ -6,6 +6,7 @@ import { getFileName, isExistFile, openFile, openFileInFolder, pathJoin, removeF
 import { ipcMainHandle } from '../ipc-main'
 import {win} from '../../../main/services/windowManager'
 import {
+  generateName,
   addDownloadItem,
   deleteSoureceItem,
   download,
@@ -23,7 +24,7 @@ import {
 import { from } from 'core-js/fn/array'
 
 // let win: BrowserWindow | null
-let newDownloadItem: INewDownloadFile | null
+let newSingleDownloadItem: INewDownloadFile | null
 let downloadItemData: IDownloadFile[] = []
 let downloadCompletedIds: string[] = [] // 下载完成的 id
 const tempDownloadItemIds: string[] = [] // 下载中的 id
@@ -88,14 +89,15 @@ export const listenerDownload = async (
 ): Promise<void> => {
   // 新建下载为空时，会执行 electron 默认的下载处理
   debugger
-  // if (!newDownloadItem) return
+  // if (!newSingleDownloadItem) return
 
   let prevReceivedBytes = 0 // 记录上一次下载的字节数据
   // 添加下载项
   const downloadItem: IDownloadFile = await addDownloadItem({
     item,
     downloadIds: tempDownloadItemIds,
-    data: downloadItemData
+    data: downloadItemData,
+    newSingleDownloadItem
   })
   setTaskbar(downloadItemData, downloadCompletedIds, -1, win)
 
@@ -205,32 +207,36 @@ const retryDownloadFile = (data: IDownloadFile): boolean => {
  */
 const downloadFile = (newItem: INewDownloadFile) => {
   const { url, fileName, path: savePath } = newItem
-  const newFileName = getFileName(fileName ?? '', url) // 处理文件名
-
-  // 处理保存路径
-  const downloadPath = pathJoin(savePath, newFileName)
-  // 查找下载记录中是否存在历史下载
-  const existItem = isExistItem(url, downloadItemData)
-
-  newItem.fileName = newFileName
-  newItem.path = downloadPath
-
-  // 判断是否存在
-  if (isExistFile(downloadPath)) {
-    const id = existItem?.id || uuidV4()
-    return {id, ...newItem}
+  debugger
+  //单文件下载情况
+  if(fileName!=undefined){
+    const newFileName = fileName || generateName(url) // 处理文件名
+  
+    // 处理保存路径
+    const downloadPath = pathJoin(savePath, newFileName)
+    // 查找下载记录中是否存在历史下载
+    const existItem = isExistItem(url, downloadItemData)
+  
+    newItem.fileName = newFileName
+    newItem.path = downloadPath
+  
+    // 判断是否存在
+    if (isExistFile(downloadPath)) {
+      const id = existItem?.id || uuidV4()
+      return {id, ...newItem}
+    }
+  
+    if (existItem) {
+      retryDownloadFile({ ...existItem, ...newItem })
+      return null
+    }
+  
+    newSingleDownloadItem = {
+      url,
+      fileName: newFileName,
+      path: downloadPath,
+    }
   }
-
-  if (existItem) {
-    retryDownloadFile({ ...existItem, ...newItem })
-    return null
-  }
-
-  // newDownloadItem = {
-  //   url,
-  //   fileName: newFileName,
-  //   path: downloadPath,
-  // }
   download(url, win)
   return null
 }
