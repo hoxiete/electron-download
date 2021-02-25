@@ -1,7 +1,7 @@
 import { ipcMain, dialog } from 'electron'
 import Server from '../server/index'
 export default {
-  Mainfunc (mainWindow, IsUseSysTitle) {
+  Mainfunc (mainWindow) {
     ipcMain.on('IsUseSysTitle', (event) => {
       const data = IsUseSysTitle
       event.reply('CisUseSysTitle', data)

@@ -3,42 +3,47 @@
   <div class="window-title">
     <!-- 软件logo预留位置 -->
     <div style="-webkit-app-region: drag" class="logo">
-      <!-- <svg-icon icon-class="electron-logo"></svg-icon> -->
-      <!-- <i class="el-icon-delete"></i> -->
+      <svg-icon icon-class="electron-logo"></svg-icon>
     </div>
     <!-- 菜单栏位置 -->
     <div></div>
     <!-- 中间标题位置 -->
     <div style="-webkit-app-region: drag" class="title"></div>
     <div class="controls-container">
-      <div class="windows-icon-bg">
+      <div style="margin-top: 40px;width: 0px;">
         <el-popover
           placement="bottom"
           width="400"
           trigger="manual"
           v-model="visible"
         >
-          <downloadIndex
-          />
+          <downloadIndex />
           <template slot="reference">
             <el-badge :hidden="count <= 0" :value="count" class="icon-size">
               <el-button
                 type="info"
                 icon="el-icon-message"
                 circle
-                @click="visible=!visible"
+                @click="visible = !visible"
               ></el-button>
             </el-badge>
           </template>
         </el-popover>
       </div>
-      <!-- <div class="windows-icon-bg" @click="MixOrReduction">
-        <svg-icon v-if="mix" icon-class="reduction" class-name="icon-size"></svg-icon>
+      <div class="windows-icon-bg" @click="Mini">
+        <svg-icon icon-class="mini" class-name="icon-size"></svg-icon>
+      </div>
+      <div class="windows-icon-bg" @click="MixOrReduction">
+        <svg-icon
+          v-if="mix"
+          icon-class="reduction"
+          class-name="icon-size"
+        ></svg-icon>
         <svg-icon v-else icon-class="mix" class-name="icon-size"></svg-icon>
       </div>
       <div class="windows-icon-bg close-icon" @click="Close">
         <svg-icon icon-class="close" class-name="icon-size"></svg-icon>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -58,6 +63,7 @@ import {
 } from '@/components/file-manager/ipc-renderer'
 export default {
   data: () => ({
+    mix:false,
     count: 0,
     visible: false,
     triggerType: 'manual',
@@ -82,14 +88,24 @@ export default {
   },
 
   methods: {
+    Mini () {
+      this.$ipcApi.send("windows-mini");
+    },
+    MixOrReduction () {
+      this.$ipcApi.send("window-max");
+      this.$ipcApi.on("window-confirm", (event, arg) => this.mix = arg);
+    },
+    Close () {
+      this.$ipcApi.send("window-close");
+    }
   }
 };
 </script>
 <style rel='stylesheet/scss' lang='scss' scoped>
 .window-title {
   width: 100%;
-  height: 50px;
-  line-height: 30px;
+  height: 25px;
+  line-height: 25px;
   background-color: #f8096d;
   display: flex;
   -webkit-app-region: drag;
@@ -121,7 +137,7 @@ export default {
       width: 33.34%;
       color: rgba(129, 129, 129, 0.6);
       .icon-size {
-        width: 40px;
+        width: 15px;
         height: 15px;
       }
     }

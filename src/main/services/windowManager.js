@@ -30,8 +30,12 @@ function createMainWindow () {
     width: 1233,
     minWidth: 1200,
     show: false,
+    minimizable:true,
+    maximizable:true,
+    titleBarStyle: 'hidden',
+    frame: false,
     icon:__dirname+'build/icons/icon.ico',
-    frame: config.IsUseSysTitle,
+    // frame: config.IsUseSysTitle,
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,
@@ -54,13 +58,14 @@ function createMainWindow () {
     })
   }
   // 载入菜单
-  const menu = Menu.buildFromTemplate(menuconfig)
-  Menu.setApplicationMenu(menu)
+  // const menu = Menu.buildFromTemplate(menuconfig)
+  // Menu.setApplicationMenu(menu)
+  Menu.setApplicationMenu(null)
   mainWindow.loadURL(winURL)
 
-  setIpc.Mainfunc(mainWindow, config.IsUseSysTitle)
+  setIpc.Mainfunc(mainWindow)  //没用
   upload.Update(mainWindow)
-  DownloadUpdate.download(mainWindow)
+  // DownloadUpdate.download(mainWindow) //下载功能有了 不需要
 
   mainWindow.webContents.once('dom-ready', () => {
     mainWindow.show()

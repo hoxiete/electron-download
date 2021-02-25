@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="24">
         <!-- <el-card class="box-card"> -->
-        <el-form ref="form" :model="form" label-width="120px">
+        <el-form ref="form" :model="form" label-width="120px" style="margin-left: -16%;">
           <el-form-item label="网址">
             <el-input v-model="form.url"></el-input>
           </el-form-item>
