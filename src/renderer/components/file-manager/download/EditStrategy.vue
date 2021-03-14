@@ -5,12 +5,12 @@
     :show-close="false"
     class="drawer"
     direction="ttb"
-    :size="'40%'"
+    :size="'60%'"
   >
     <el-table
       class="toscroll"
       ref="singleTable"
-      :height="'80%'"
+      :height="height"
       :data="allStrategy.concat([{ name: '', strategy: '', new: true }])"
       @row-click="rowClick"
       :row-class-name="tableRowClassName"
@@ -39,7 +39,7 @@
             />
           </span>
           <el-button
-            style="margin-left: 150px"
+            style="margin-left: 30%"
             v-else-if="scope.row.new"
             type="primary"
             circle
@@ -147,7 +147,7 @@ export default {
         url: '',
         path: ''
       },
-      innerVisible: false
+      height: '80%'
     }
   },
   computed: {
@@ -163,7 +163,7 @@ export default {
       }
     },
     rowClick (row, column, event) {
-      if(row.new) return
+      if (row.new) return
       this.clickCurrentRow = row;
     },
     addOneStrategy (row) {
@@ -211,7 +211,33 @@ export default {
       this.showStrategy = false
       this.onClose()
     },
-  }
+    getAutoHeight () {
+      debugger
+      let el = this.$refs.singleTable,
+        elParent = el.parentNode,
+        pt = this.getStyle(elParent, "paddingTop"),
+        pb = this.getStyle(elParent, "paddingBottom");
+      // 一定要使用 nextTick 来改变height 不然不会起作用
+      debugger
+      this.$nextTick(() => {
+        this.height = elParent.clientHeight - (pt + pb) + "px";
+      });
+    },
+    getStyle (obj, attr) {
+      // 兼容IE浏览器
+      let result = obj.currentStyle
+        ? obj.currentStyle[attr].replace("px", "")
+        : document.defaultView
+          .getComputedStyle(obj, null)[attr].replace("px", "");
+      return Number(result);
+    }
+  },
+  mounted () {
+    this.getAutoHeight()
+  },
+  created () {
+
+  },
 }
 </script>
 <style rel='stylesheet/scss' lang='scss'scoped>

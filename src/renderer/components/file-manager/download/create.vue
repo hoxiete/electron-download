@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="create-download" title="新建下载" center :visible="showCreate" :show-close="false">
+  <el-dialog class="create-download" title="新建下载" :modal="false" center :visible="showCreate" :show-close="false">
     <el-form class="form">
       <el-card
         v-loading="loading"
@@ -84,6 +84,7 @@ export default {
         this.loading = true
         getLastDownloadPath().then(path => this.formData.path = path)
         this.html = await getHtml4Url(this.searchUrl)
+        debugger
         this.loading = false
         // this.formData = {
         //   url: '',
@@ -159,7 +160,7 @@ export default {
         return;
       }
       let selectItem = this.multipleSelection
-      selectItem.forEach(async (item, index) => await newDownloadFile({ path: this.formData.path, url: item.url, fileName: this.generateName(item.url) }))
+      selectItem.forEach(async (item, index) => await newDownloadFile({ path: this.formData.path, url: item.url }))
       setLastDownloadPath(this.formData.path)
       this.handleCancel()
     },

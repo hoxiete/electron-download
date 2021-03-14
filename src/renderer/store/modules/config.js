@@ -1,7 +1,7 @@
 import { setStrategy, getStrategy } from '../../utils/electronStoreUtil'
 const config = {
   state: {
-    strategy: [{ key: 1, name: 'javbus1', strategy: '.nthread_firstpostbox img.zoom' }, { key: 2, name: 'pickpig2', strategy: '.nthread_firstpostsdadbox img.zoo' },{ key: 3, name: 'javbus3', strategy: 'dasdasdasdsad' }, { key: 4, name: 'pickpig4', strategy: '.nthread_firstpoaaaastbox img.zoo' },{ key: 5, name: 'javbus5', strategy: '.nthread_firstpostbddddfffox img.zoom' }, { key: 6, name: 'pickpig6', strategy: '.nthrdasdaead_firstpostbox img.zoo' }],
+    strategy: [{ key: 1, name: 'javbus', strategy: '.nthread_firstpostbox img.zoom' }],
     currentStrategy: ''
   },
 

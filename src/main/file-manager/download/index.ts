@@ -99,6 +99,7 @@ export const listenerDownload = async (
     data: downloadItemData,
     newSingleDownloadItem
   })
+  newSingleDownloadItem = null
   setTaskbar(downloadItemData, downloadCompletedIds, -1, win)
 
   // 新下载任务创建完成，渲染进程监听该事件，添加到下载管理器列表
