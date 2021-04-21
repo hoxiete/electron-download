@@ -12,11 +12,16 @@ export default {
   components: {
     SearchPage
   },
+  data(){
+    return{
+      backgroundUrl:''
+    }
+  },
 
   // 创建前设置
   beforeCreate () {
     // const urlPah = require('../../../static/backimage.jpg')
-    const urlPah = require('D:/BaiduNetdiskDownload/我的图片/illust_70505705_20200801_174143.png')
+    const urlPah = require('D:/BaiduNetdiskDownload/我的图片/illust_76542723_20190913_084350.jpg')
     document.querySelector('body')
       .setAttribute('style', 'background-repeat:no-repeat;background-size:100%; background-image:url("' + urlPah + '") ')
   },

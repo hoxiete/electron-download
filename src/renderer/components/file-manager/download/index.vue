@@ -26,6 +26,7 @@ import DownloadItem from '../components/download-item'
 import {
   clearDownloadDone,
   getDownloadData,
+  openDownloadManager,
   listenerDownloadItemDone,
   listenerDownloadItemUpdate,
   listenerNewDownloadItem,
@@ -57,6 +58,7 @@ export default {
     listenerDownloadItemDone((event, item) => {
       this.handleUpdateData(item)
     })
+    await openDownloadManager()
     this.initData()
   },
   data () {
