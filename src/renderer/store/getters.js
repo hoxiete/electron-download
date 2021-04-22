@@ -7,6 +7,10 @@ const getters = {
   allStrategy: state => state.config.strategy,
   currentStrategy: state => state.config.currentStrategy,
   openSettingFlag: state => state.config.openSettingFlag,
+  globalSetting: state => state.config.globalSetting,
+  backgroudUrl: state => state.config.globalSetting.backgroudUrl,
+  themeColor: state => state.config.globalSetting.themeColor,
+
 
 }
 export default getters

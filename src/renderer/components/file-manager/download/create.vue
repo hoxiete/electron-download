@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="create-download" title="新建下载" :modal="false" center :visible="showCreate" :show-close="false">
+  <el-dialog class="create-download" title="新建下载" :modal="false" center :visible="show" :show-close="false">
     <el-form class="form">
       <el-card
         v-loading="loading"
@@ -80,7 +80,6 @@ export default {
   watch: {
     async show (val) {
       if (val) {
-        this.showCreate = this.show
         this.loading = true
         getLastDownloadPath().then(path => this.formData.path = path)
         this.html = await getHtml4Url(this.searchUrl)
@@ -98,7 +97,6 @@ export default {
   },
   data () {
     return {
-      showCreate: false,
       html: '',
       loading: false,
       resourceData: [],
@@ -164,7 +162,6 @@ export default {
     },
     // 关闭新建对话框
     handleCancel () {
-      this.showCreate = false
       this.onClose()
     },
 

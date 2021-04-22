@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div class="window-title">
+  <div class="window-title" :style="themeStyle">
     <!-- 软件logo预留位置 -->
     <div style="-webkit-app-region: drag" class="logo">
       <svg-icon icon-class="electron-logo"></svg-icon>
@@ -64,7 +64,7 @@ import {
   pauseOrResume,
   removeDownloadItem,
 } from "@/components/file-manager/ipc-renderer";
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data: () => ({
     mix: false,
@@ -85,7 +85,13 @@ export default {
 
     // listenerDownloadItemDone((event, item) => {
     //   this.handleUpdateData(item)
-    // })
+    // }) 
+  },
+  computed:{
+    ...mapGetters(['themeColor']),
+    themeStyle(){
+      return "background-color: "+ this.themeColor || ''
+    }
   },
 
   mounted() {},
@@ -113,12 +119,12 @@ export default {
   width: 100%;
   height: 25px;
   line-height: 25px;
-  background-color: #f8096d;
+  // background-color: #f8096d;
   display: flex;
   -webkit-app-region: drag;
   position: fixed;
   top: 0;
-  margin-left: -7px;
+  margin-left: -8px;
   // z-index: 99999;
   .title {
     text-align: center;

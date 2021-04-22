@@ -9,7 +9,7 @@
 <script>
   import LandingPage from '@/components/LandingPage'
   import BasicLayout from '@/components/BasicLayout'
-  import CHeader from '@/components/title'
+  import CHeader from '@/components/title/titleIndex'
 
   export default {
     name: 'myelectron',

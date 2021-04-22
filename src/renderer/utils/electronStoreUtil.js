@@ -11,6 +11,6 @@ export function getStrategy () {
 export function setGlobalSetting (array) {
   electronStore.set(setting, array)
 }
-export function getGlobalSetting () {
+export function getGlobalSetting () { 
   return electronStore.get(setting)
 }

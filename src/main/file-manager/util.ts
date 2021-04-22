@@ -80,6 +80,14 @@ export const openFile = (path: string): boolean => {
 }
 
 /**
+ * 读取文件
+ * @param path - 文件路径
+ */
+export const readFile = (path: string): Buffer => {
+  return fs.readFileSync(path)
+}
+
+/**
  * 打开文件所在位置
  * @param path - 文件路径
  */

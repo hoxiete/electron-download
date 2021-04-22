@@ -67,6 +67,13 @@ export const retryDownloadFile = (item: IDownloadFile): Promise<boolean> =>
 export const openFileDialog = (path: string): Promise<string> =>{
   return ipcRendererInvoke<string>('openFileDialog', path)
 }
+/**
+ * 打开选择文件对话框
+ * @param path - 路径
+ */
+export const chooseFileDialog = (path: string): Promise<string> =>{
+  return ipcRendererInvoke<string>('chooseFileDialog', path)
+}
 
 /**
  * 暂停或恢复下载

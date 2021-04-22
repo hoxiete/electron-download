@@ -2,9 +2,9 @@ import { app, BrowserWindow, session, dialog, WebContents, DownloadItem } from '
 
 // import { createBrowserWindow } from '../../browser-window'
 import { IDownloadFile, INewDownloadFile, IPagination } from '../interface'
-import { getFileName, isExistFile, openFile, openFileInFolder, pathJoin, removeFile, uuidV4 } from '../util'
+import { getFileName, isExistFile, openFile, readFile, openFileInFolder, pathJoin, removeFile, uuidV4 } from '../util'
 import { ipcMainHandle } from '../ipc-main'
-import {win} from '../../../main/services/windowManager'
+import { win } from '../../../main/services/windowManager'
 import {
   generateName,
   addDownloadItem,
@@ -103,7 +103,7 @@ export const listenerDownload = async (
   setTaskbar(downloadItemData, downloadCompletedIds, -1, win)
 
   // 新下载任务创建完成，渲染进程监听该事件，添加到下载管理器列表
-  webContents.send('newDownloadItem', {...downloadItem, _sourceItem: null})
+  webContents.send('newDownloadItem', { ...downloadItem, _sourceItem: null })
 
   // 更新下载
   item.on('updated', (e, state) => {
@@ -121,7 +121,7 @@ export const listenerDownload = async (
     // 更新任务栏进度
     win?.setProgressBar(bytes.receivedBytes / bytes.totalBytes)
     // 通知渲染进程，更新下载状态
-    webContents.send('downloadItemUpdate', {...downloadItem, _sourceItem: null})
+    webContents.send('downloadItemUpdate', { ...downloadItem, _sourceItem: null })
   })
 
   // 下载完成
@@ -141,7 +141,7 @@ export const listenerDownload = async (
 
     setDownloadStore(downloadItemData)
     // 通知渲染进程，更新下载状态
-    webContents.send('downloadItemDone', {...downloadItem, _sourceItem: null})
+    webContents.send('downloadItemDone', { ...downloadItem, _sourceItem: null })
   })
 }
 
@@ -150,7 +150,7 @@ export const listenerDownload = async (
  */
 const handleDownloadData = () => {
   downloadItemData = initDownloadData()
-debugger
+  debugger
   downloadItemData.forEach(item => {
     // 如果下载中或中断的，继续下载
     if (['progressing', 'interrupted'].includes(item.state)) {
@@ -187,6 +187,20 @@ const openFileDialog = async (oldPath: string = app.getPath('downloads')) => {
 }
 
 /**
+ * 打开选择文件对话框
+ * @param oldPath - 上一次打开的路径
+ */
+const chooseFileDialog = async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog(win, {
+    title: '选择文件',
+    properties: ['openFile'],
+    filters: [
+      { name: 'Images', extensions: ['jpg', 'png', 'gif', 'jpeg'] }]
+  })
+  return !canceled ? { path: filePaths[0], buffer: readFile(filePaths[0]) } : ''
+}
+
+/**
  * 重新下载
  * @param data - 下载项
  */
@@ -210,28 +224,28 @@ const downloadFile = (newItem: INewDownloadFile) => {
   const { url, fileName, path: savePath } = newItem
   debugger
   //单文件下载情况
-  if(fileName!=undefined){
+  if (fileName != undefined) {
     const newFileName = fileName || generateName(url) // 处理文件名
-  
+
     // 处理保存路径
     const downloadPath = pathJoin(savePath, newFileName)
     // 查找下载记录中是否存在历史下载
     const existItem = isExistItem(url, downloadItemData)
-  
+
     newItem.fileName = newFileName
     newItem.path = downloadPath
-  
+
     // 判断是否存在
     if (isExistFile(downloadPath)) {
       const id = existItem?.id || uuidV4()
-      return {id, ...newItem}
+      return { id, ...newItem }
     }
-  
+
     if (existItem) {
       retryDownloadFile({ ...existItem, ...newItem })
       return null
     }
-  
+
     newSingleDownloadItem = {
       url,
       fileName: newFileName,
@@ -293,7 +307,7 @@ const clearDownloadDone = () => {
 /**
  * 设置上一次下载的路径
  */
-const setLastDownloadPath = (path:string) => {
+const setLastDownloadPath = (path: string) => {
   setLastDownloadPathStore(path)
 }
 
@@ -319,6 +333,12 @@ const listenerEvent = () => {
   // 选择保存位置对话框
   ipcMainHandle('openFileDialog', (event, oldPath?: string) => openFileDialog(oldPath))
 
+  // 选择文件对话框
+  ipcMainHandle('chooseFileDialog', (event, oldPath?: string) => chooseFileDialog())
+
+  // 选择文件对话框
+  // ipcMainHandle('readFile4Path', (event, path?: string) => readFile4Path(oldPath))
+
   // 打开文件
   ipcMainHandle('openFile', (event, path: string) => openFile(path))
 
@@ -331,7 +351,7 @@ const listenerEvent = () => {
   // 清空已完成（非下载中的）的下载项
   ipcMainHandle('clearDownloadDone', () => clearDownloadDone())
   // 设置上一次下载的路径
-  ipcMainHandle('setLastDownloadPath', (event,path:string) => setLastDownloadPathStore(path))
+  ipcMainHandle('setLastDownloadPath', (event, path: string) => setLastDownloadPathStore(path))
   // 设置上一次下载的路径
   ipcMainHandle('getLastDownloadPath', () => getLastDownloadPathStore())
 

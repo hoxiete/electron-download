@@ -48,7 +48,7 @@
 // import { searchUrl } from '@/utils/download'
 import { validateURL } from '@/utils/validate'
 import CreateModal from './file-manager/download/create'
-import SettingModal from './setting'
+import SettingModal from './setting/settingDialog'
 import EditStrategy from './file-manager/download/EditStrategy'
 
 import { mapMutations, mapActions, mapGetters } from 'vuex'
