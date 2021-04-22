@@ -30,6 +30,12 @@
       "
       @openStrategy="openStrategy"
     />
+    <SettingModal
+      :show="openSettingFlag"
+      :onClose="
+        ()=>closeGlogalSetting()
+      "
+    />
     <EditStrategy :show="editStrategyShow" :onClose="
         () => {
           editStrategyShow = false;
@@ -42,11 +48,12 @@
 // import { searchUrl } from '@/utils/download'
 import { validateURL } from '@/utils/validate'
 import CreateModal from './file-manager/download/create'
+import SettingModal from './setting'
 import EditStrategy from './file-manager/download/EditStrategy'
 
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 export default {
-  components: { CreateModal, EditStrategy },
+  components: { CreateModal, EditStrategy,SettingModal },
   data () {
     return {
       createModalShow: false,
@@ -59,10 +66,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['percent', 'status'])
+    ...mapGetters(['openSettingFlag'])
   },
   methods: {
-    ...mapActions(['addTotal', 'clearStatus']),
+    ...mapActions(['closeGlogalSetting']),
     openStrategy () {
       this.editStrategyShow = true
     },

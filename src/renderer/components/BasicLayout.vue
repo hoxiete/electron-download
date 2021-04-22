@@ -5,31 +5,43 @@
 </template>
 
 <script>
-import SearchPage from '@/components/SearchPage'
+import SearchPage from "@/components/SearchPage";
 
 export default {
-  name: 'basicLayout',
+  name: "basicLayout",
   components: {
-    SearchPage
+    SearchPage,
   },
-  data(){
-    return{
-      backgroundUrl:''
-    }
+  data() {
+    return {
+      backgroundUrl: "",
+    };
   },
 
   // 创建前设置
-  beforeCreate () {
+  beforeCreate() {
     // const urlPah = require('../../../static/backimage.jpg')
-    const urlPah = require('D:/BaiduNetdiskDownload/我的图片/illust_76542723_20190913_084350.jpg')
-    document.querySelector('body')
-      .setAttribute('style', 'background-repeat:no-repeat;background-size:100%; background-image:url("' + urlPah + '") ')
+    try {
+      const urlPah = require("D:/BaiduNetdiskDownload/我的图片/illust_76542723_20190913_084350.jpg");
+      document
+        .querySelector("body")
+        .setAttribute(
+          "style",
+          'background-repeat:no-repeat;background-size:100%; background-image:url("' +
+            urlPah +
+            '") '
+        );
+    } catch(e) {
+      document
+        .querySelector("body")
+        .setAttribute("style", "background-color:#fffff");
+    }
   },
   // 销毁前清除
-  beforeDestroy () {
-    document.querySelector('body').removeAttribute('style')
-  }
-}
+  beforeDestroy() {
+    document.querySelector("body").removeAttribute("style");
+  },
+};
 </script>
 
 <style>

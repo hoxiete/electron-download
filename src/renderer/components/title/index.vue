@@ -10,7 +10,7 @@
     <!-- 中间标题位置 -->
     <div style="-webkit-app-region: drag" class="title"></div>
     <div class="controls-container">
-      <div style="margin-top: 40px;width: 0px;">
+      <div style="margin-top: 40px; width: 0px">
         <el-popover
           placement="bottom"
           width="400"
@@ -29,6 +29,9 @@
             </el-badge>
           </template>
         </el-popover>
+      </div>
+      <div class="windows-icon-bg" @click="openSetting">
+        <i class="svg-icon el-icon-setting"></i>
       </div>
       <div class="windows-icon-bg" @click="Mini">
         <svg-icon icon-class="mini" class-name="icon-size"></svg-icon>
@@ -49,7 +52,7 @@
 </template>
 
 <script>
-import downloadIndex from '@/components/file-manager/download/index.vue'
+import downloadIndex from "@/components/file-manager/download/index.vue";
 import {
   clearDownloadDone,
   getDownloadData,
@@ -60,21 +63,22 @@ import {
   openFileInFolder,
   pauseOrResume,
   removeDownloadItem,
-} from '@/components/file-manager/ipc-renderer'
+} from "@/components/file-manager/ipc-renderer";
+import { mapActions } from 'vuex';
 export default {
   data: () => ({
-    mix:false,
+    mix: false,
     count: 0,
     visible: false,
-    triggerType: 'manual',
-    permanent: false
+    triggerType: "manual",
+    permanent: false,
   }),
 
   components: { downloadIndex },
-  created () {
+  created() {
     listenerNewDownloadItem((event, item) => {
-      this.count += 1
-    })
+      this.count += 1;
+    });
     // listenerDownloadItemUpdate((event, item) => {
     //   this.handleUpdateData(item)
     // })
@@ -84,21 +88,24 @@ export default {
     // })
   },
 
-  mounted () {
-  },
+  mounted() {},
 
   methods: {
-    Mini () {
+    ...mapActions(['openGlogalSetting']),
+    openSetting() {
+      this.openGlogalSetting()
+    },
+    Mini() {
       this.$ipcApi.send("windows-mini");
     },
-    MixOrReduction () {
+    MixOrReduction() {
       this.$ipcApi.send("window-max");
-      this.$ipcApi.on("window-confirm", (event, arg) => this.mix = arg);
+      this.$ipcApi.on("window-confirm", (event, arg) => (this.mix = arg));
     },
-    Close () {
+    Close() {
       this.$ipcApi.send("window-close");
-    }
-  }
+    },
+  },
 };
 </script>
 <style rel='stylesheet/scss' lang='scss' scoped>
@@ -139,6 +146,14 @@ export default {
       .icon-size {
         width: 15px;
         height: 15px;
+      }
+      .svg-icon {
+        color: azure;
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
       }
     }
     .windows-icon-bg:hover {

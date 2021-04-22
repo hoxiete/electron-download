@@ -2,7 +2,8 @@ import { setStrategy, getStrategy } from '../../utils/electronStoreUtil'
 const config = {
   state: {
     strategy: [{ key: 1, name: 'javbus', strategy: '.nthread_firstpostbox img.zoom' }],
-    currentStrategy: ''
+    currentStrategy: '',
+    openSettingFlag:false
   },
 
   mutations: {
@@ -24,6 +25,12 @@ const config = {
       all.splice(all.findIndex(ele => ele.key === data.key), 1)
       state.strategy = all
     },
+    OPEN_SETTING:(state)=>{
+      state.openSettingFlag = true
+    },
+    CLOSE_SETTING:(state)=>{
+      state.openSettingFlag = false
+    }
   },
   actions: {
     addStrategy ({ commit, getters }, data) {
@@ -41,6 +48,12 @@ const config = {
       commit('DEL_STRATEGY', data)
       setStrategy(getters.allStrategy)
     },
+    openGlogalSetting({ commit }){
+      commit('OPEN_SETTING')
+    }, 
+    closeGlogalSetting({ commit }){
+      commit('CLOSE_SETTING')
+    }
 
 
   },

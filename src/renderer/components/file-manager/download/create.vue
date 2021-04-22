@@ -84,7 +84,6 @@ export default {
         this.loading = true
         getLastDownloadPath().then(path => this.formData.path = path)
         this.html = await getHtml4Url(this.searchUrl)
-        debugger
         this.loading = false
         // this.formData = {
         //   url: '',
@@ -94,7 +93,6 @@ export default {
       }
     },
     currentStrategy (val) {
-      debugger
       this.strategy = this.allStrategy.find(item => item == val).strategy
     }
   },

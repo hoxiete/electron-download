@@ -58,7 +58,7 @@ export default {
     listenerDownloadItemDone((event, item) => {
       this.handleUpdateData(item)
     })
-    await openDownloadManager()
+    openDownloadManager()
     this.initData()
   },
   data () {

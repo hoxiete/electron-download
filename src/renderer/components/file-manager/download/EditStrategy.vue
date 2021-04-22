@@ -212,13 +212,11 @@ export default {
       this.onClose()
     },
     getAutoHeight () {
-      debugger
       let el = this.$refs.singleTable,
         elParent = el.parentNode,
         pt = this.getStyle(elParent, "paddingTop"),
         pb = this.getStyle(elParent, "paddingBottom");
       // 一定要使用 nextTick 来改变height 不然不会起作用
-      debugger
       this.$nextTick(() => {
         this.height = elParent.clientHeight - (pt + pb) + "px";
       });

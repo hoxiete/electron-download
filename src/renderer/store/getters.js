@@ -6,6 +6,7 @@ const getters = {
   status: state => state.download.status,
   allStrategy: state => state.config.strategy,
   currentStrategy: state => state.config.currentStrategy,
+  openSettingFlag: state => state.config.openSettingFlag,
 
 }
 export default getters
