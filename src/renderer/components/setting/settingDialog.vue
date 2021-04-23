@@ -20,7 +20,7 @@
       <el-form-item label="壁纸图片：" class="downloadPath">
         <el-input
           readOnly
-          :value="formData.backgroudUrl.path"
+          :value="formData.backgroudUrl"
           style="width: 400px"
         />
         <el-button
@@ -48,7 +48,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { getGlobalSetting, setGlobalSetting } from '@/utils/electronStoreUtil'
+import { getGlobalSetting, setGlobalSetting ,getsetting} from '@/utils/electronStoreUtil'
 import { equarComplex } from '@/utils/validate'
 import {
   openFileDialog,
@@ -65,6 +65,7 @@ export default {
     show (val) {
       if (val) {
         this.loading = true
+        // let d = getsetting() 
         let set = {...this.globalSetting}
         if (set != undefined) {
           // this.formData = this.originData = {...set}  //这样写会让这两个数据双向绑定。影响后续比对操作
@@ -79,7 +80,6 @@ export default {
     return {
       loading: false,
       originData:{},
-      viewBackgroudUrl:'',
       formData: {
         backgroudUrl: '',
         savePath: '',

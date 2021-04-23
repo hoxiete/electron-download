@@ -231,7 +231,7 @@ export default {
     }
   },
   mounted () {
-    this.getAutoHeight()
+    // this.getAutoHeight()
   },
   created () {
 

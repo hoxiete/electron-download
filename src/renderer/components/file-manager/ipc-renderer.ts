@@ -76,6 +76,14 @@ export const chooseFileDialog = (path: string): Promise<string> =>{
 }
 
 /**
+ * 从路径获取文件资源url
+ * @param path - 路径
+ */
+export const getUrl4File = (path: string): Promise<string> =>{
+  return ipcRendererInvoke<string>('getUrl4File', path)
+}
+
+/**
  * 暂停或恢复下载
  * @param item - 下载项
  */

@@ -14,3 +14,7 @@ export function setGlobalSetting (array) {
 export function getGlobalSetting () { 
   return electronStore.get(setting)
 }
+
+export function getsetting(){
+  return electronStore 
+}

@@ -1,4 +1,5 @@
 import { app, BrowserWindow, session, dialog, WebContents, DownloadItem } from 'electron'
+import pathwin from 'path'
 
 // import { createBrowserWindow } from '../../browser-window'
 import { IDownloadFile, INewDownloadFile, IPagination } from '../interface'
@@ -197,7 +198,22 @@ const chooseFileDialog = async () => {
     filters: [
       { name: 'Images', extensions: ['jpg', 'png', 'gif', 'jpeg'] }]
   })
-  return !canceled ? { path: filePaths[0], buffer: readFile(filePaths[0]) } : ''
+  return !canceled ? filePaths[0]: ''
+}
+
+/**
+ * 读取文件
+ */
+ const getUrl4File= async (path:string) => {
+   debugger
+  // let data = readFile(path)
+  // let arrayBufferView = new Uint8Array(data);
+  // let blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+  // let urlCreator = window.URL || window.webkitURL;
+  // var imageUrl = urlCreator.createObjectURL(arrayBufferView);
+  // return imageUrl
+  let dd = pathwin.basename(path)
+  return dd
 }
 
 /**
@@ -336,8 +352,8 @@ const listenerEvent = () => {
   // 选择文件对话框
   ipcMainHandle('chooseFileDialog', (event, oldPath?: string) => chooseFileDialog())
 
-  // 选择文件对话框
-  // ipcMainHandle('readFile4Path', (event, path?: string) => readFile4Path(oldPath))
+  //从路径获取文件资源url
+  ipcMainHandle('getUrl4File', (event, path: string) => getUrl4File(path))
 
   // 打开文件
   ipcMainHandle('openFile', (event, path: string) => openFile(path))

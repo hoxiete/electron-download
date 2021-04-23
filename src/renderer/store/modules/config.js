@@ -6,7 +6,7 @@ const config = {
     openSettingFlag: false,
     //当前全局设置 从 electronStore里拿，如果没有则采用默认配置
     globalSetting: getGlobalSetting() || {
-      backgroudUrl: { path: '', buffer: '' },
+      backgroudUrl: '',
       savePath: '',
       themeColor: 'rgb(248, 9, 109)'
     },

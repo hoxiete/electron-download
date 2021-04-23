@@ -7,6 +7,7 @@
 <script>
 import SearchPage from "@/components/SearchPage";
 import { mapGetters } from 'vuex';
+import {getUrl4File}from '@/components/file-manager/ipc-renderer'
 export default {
   name: "basicLayout",
   components: {
@@ -32,11 +33,9 @@ export default {
     },
     makeBackground () {
       try {
-        if(this.backgroudUrl.buffer){
-          let arrayBufferView = new Uint8Array(this.backgroudUrl.buffer);
-          var blob = new Blob([arrayBufferView], { type: "image/jpeg" });
-          var urlCreator = window.URL || window.webkitURL;
-          var imageUrl = urlCreator.createObjectURL(blob);
+        debugger
+        if(this.backgroudUrl){
+          let imageUrl = getUrl4File(this.backgroudUrl)
           document
             .querySelector("body")
             .setAttribute(
