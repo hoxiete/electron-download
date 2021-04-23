@@ -7,7 +7,7 @@
 <script>
 import SearchPage from "@/components/SearchPage";
 import { mapGetters } from 'vuex';
-import {getUrl4File}from '@/components/file-manager/ipc-renderer'
+import { getUrl4File } from '@/components/file-manager/ipc-renderer'
 export default {
   name: "basicLayout",
   components: {
@@ -27,15 +27,18 @@ export default {
   },
   methods: {
     defaultBackground () {
-      document
+      document 
         .querySelector("body")
         .setAttribute("style", "background-color:#fffff");
     },
-    makeBackground () {
+    async makeBackground () {
       try {
-        debugger
-        if(this.backgroudUrl){
-          let imageUrl = getUrl4File(this.backgroudUrl)
+        if (this.backgroudUrl) {
+          let data = await getUrl4File(this.backgroudUrl)
+          let arrayBufferView = new Uint8Array(data); 
+          let blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+          let urlCreator = window.URL || window.webkitURL;
+          var imageUrl = urlCreator.createObjectURL(blob);
           document
             .querySelector("body")
             .setAttribute(
@@ -44,7 +47,7 @@ export default {
               imageUrl +
               '") '
             );
-        }else{
+        } else {
           this.defaultBackground()
         }
       } catch (e) {

@@ -1,5 +1,4 @@
 import { app, BrowserWindow, session, dialog, WebContents, DownloadItem } from 'electron'
-import pathwin from 'path'
 
 // import { createBrowserWindow } from '../../browser-window'
 import { IDownloadFile, INewDownloadFile, IPagination } from '../interface'
@@ -198,22 +197,14 @@ const chooseFileDialog = async () => {
     filters: [
       { name: 'Images', extensions: ['jpg', 'png', 'gif', 'jpeg'] }]
   })
-  return !canceled ? filePaths[0]: ''
+  return !canceled ? filePaths[0] : ''
 }
 
 /**
  * 读取文件
  */
- const getUrl4File= async (path:string) => {
-   debugger
-  // let data = readFile(path)
-  // let arrayBufferView = new Uint8Array(data);
-  // let blob = new Blob([arrayBufferView], { type: "image/jpeg" });
-  // let urlCreator = window.URL || window.webkitURL;
-  // var imageUrl = urlCreator.createObjectURL(arrayBufferView);
-  // return imageUrl
-  let dd = pathwin.basename(path)
-  return dd
+const getUrl4File = async (path: string) => {
+  return readFile(path)
 }
 
 /**
