@@ -41,6 +41,11 @@ export const getDownloadPath = (): string => remote.app.getPath('downloads')
 export const openFile = (path: string): Promise<string> => ipcRendererInvoke('openFile', path)
 
 /**
+ * 判断是否在下载数据
+ */
+export const isDownloading = (path: string): Promise<string> => ipcRendererInvoke('isDownloading', path)
+
+/**
  * 打开下载管理器
  */
 export const openDownloadManager = (): void => {

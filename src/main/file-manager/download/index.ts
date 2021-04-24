@@ -171,6 +171,17 @@ const handleDownloadData = () => {
 }
 
 /**
+ * 判断是否在下载数据
+ */
+const isDownloading = ():boolean  => {
+  debugger
+  downloadItemData = initDownloadData()
+  let data = downloadItemData.filter(item=>item.state=='progressing')
+  return data != undefined && Array.isArray(data) && data.length!=0
+   
+}
+
+/**
  * 打开文件选择框
  * @param oldPath - 上一次打开的路径
  */
@@ -348,6 +359,9 @@ const listenerEvent = () => {
 
   // 打开文件
   ipcMainHandle('openFile', (event, path: string) => openFile(path))
+
+  // 判断是否在下载数据
+  ipcMainHandle('isDownloading', (event) => isDownloading())
 
   // 打开文件所在路径
   ipcMainHandle('openFileInFolder', (event, path: string) => openFileInFolder(path))

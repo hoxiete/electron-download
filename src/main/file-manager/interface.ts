@@ -11,6 +11,7 @@ export type IPCEventName =
   | 'chooseFileDialog'
   | 'getUrl4File'
   | 'openFile'
+  | 'isDownloading'
   | 'openFileInFolder'
   | 'initDownloadItem'
   | 'pauseOrResume'
@@ -67,4 +68,10 @@ export interface IUpdateDownloadItem {
   downloadItem: IDownloadFile
   prevReceivedBytes: number
   state: DownloadItemState
+}
+
+export interface GlogalSetting {
+  backgroudUrl: string,
+  savePath: string,
+  themeColor: string
 }

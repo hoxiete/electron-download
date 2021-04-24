@@ -113,11 +113,6 @@ export default {
   },
   methods: {
     ...mapActions(['addStrategy', 'selectStrategy']),
-    // disabled () { !(formData.url && formData.path), [formData.url, formData.path]) },
-    disabled () { },
-    handleSelectionChange () {
-
-    },
     editStrategy () {
       if (this.strategy != '') {
         let currentStrategy = this.allStrategy.find(item => item.strategy == this.strategy)

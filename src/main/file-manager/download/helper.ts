@@ -4,10 +4,12 @@ import {
   IAddDownloadItem,
   IDownloadBytes,
   IDownloadFile,
+  GlogalSetting,
   IPagination,
   IUpdateDownloadItem,
 } from '../interface'
 import { getBase64Bytes, getFileIcon, getFileName, pathJoin, uuidV4 } from '../util'
+import { getGlobalSetting, setGlobalSetting } from '../../../renderer/utils/electronStoreUtil'
 import path from 'path';
 
 /**
@@ -93,18 +95,24 @@ export const setDownloadStore = (data: IDownloadFile[]): void => {
 export const getDownloadStore = (): IDownloadFile[] =>
   store.get('downloadManager', []) as IDownloadFile[]
 /**
- * 保存下载记录
+ * 设置默认下载路径
  * @param data - 下载项
  */
 export const setLastDownloadPathStore = (path: string): void => {
-  store.set('lastDownloadPath', path)
+  let setting = getGlobalSetting()
+  if (setting != undefined) {
+    setting = Object.assign(setting, { 'savePath': path })
+    setGlobalSetting(setting)
+  }
 }
 
 /**
- * 获取下载记录
+ * 获取默认下载路径
  */
-export const getLastDownloadPathStore = (): string =>
-  store.get('lastDownloadPath', '') as string
+export const getLastDownloadPathStore = (): string => {
+  const setting = getGlobalSetting()
+  return setting!= undefined ? setting.savePath : ""
+}
 
 /**
  * 设置任务栏
@@ -145,7 +153,7 @@ export const addDownloadItem = async ({
   const totalBytes = getBase64Bytes(fileUrl) || item.getTotalBytes()
 
   let fileId = uuidV4()
-  const savePath = newSingleDownloadItem?.path || pathJoin(getLastDownloadPathStore() || app.getPath('downloads'),fileName)
+  const savePath = newSingleDownloadItem?.path || pathJoin(getLastDownloadPathStore() || app.getPath('downloads'), fileName)
 
   if (itemIndex > -1) {
     const newItems = data.splice(itemIndex, 1)

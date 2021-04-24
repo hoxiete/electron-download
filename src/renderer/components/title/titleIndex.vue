@@ -11,21 +11,11 @@
     <div style="-webkit-app-region: drag" class="title"></div>
     <div class="controls-container">
       <div style="margin-top: 40px; width: 0px">
-        <el-popover
-          placement="bottom"
-          width="400"
-          trigger="manual"
-          v-model="visible"
-        >
+        <el-popover placement="bottom" width="400" trigger="manual" v-model="visible">
           <downloadIndex />
           <template slot="reference">
             <el-badge :hidden="count <= 0" :value="count" class="icon-size">
-              <el-button
-                type="info"
-                icon="el-icon-message"
-                circle
-                @click="visible = !visible"
-              ></el-button>
+              <el-button type="info" icon="el-icon-message" circle @click="visible = !visible"></el-button>
             </el-badge>
           </template>
         </el-popover>
@@ -37,11 +27,7 @@
         <svg-icon icon-class="mini" class-name="icon-size"></svg-icon>
       </div>
       <div class="windows-icon-bg" @click="MixOrReduction">
-        <svg-icon
-          v-if="mix"
-          icon-class="reduction"
-          class-name="icon-size"
-        ></svg-icon>
+        <svg-icon v-if="mix" icon-class="reduction" class-name="icon-size"></svg-icon>
         <svg-icon v-else icon-class="mix" class-name="icon-size"></svg-icon>
       </div>
       <div class="windows-icon-bg close-icon" @click="Close">
@@ -59,12 +45,13 @@ import {
   listenerDownloadItemDone,
   listenerDownloadItemUpdate,
   listenerNewDownloadItem,
+  isDownloading,
   openFile,
   openFileInFolder,
   pauseOrResume,
   removeDownloadItem,
 } from "@/components/file-manager/ipc-renderer";
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from "vuex";
 export default {
   data: () => ({
     mix: false,
@@ -85,21 +72,36 @@ export default {
 
     // listenerDownloadItemDone((event, item) => {
     //   this.handleUpdateData(item)
-    // }) 
+    // })
   },
-  computed:{
-    ...mapGetters(['themeColor']),
-    themeStyle(){
-      return "background-color: "+ this.themeColor || ''
-    }
+  computed: {
+    ...mapGetters(["themeColor"]),
+    themeStyle() {
+      let rgba = this.rgbToRgba(this.themeColor,0.7)
+      return `background-image: linear-gradient(to bottom,${rgba[0]} , ${rgba[1]})`;
+    },
   },
 
   mounted() {},
 
   methods: {
-    ...mapActions(['openGlogalSetting']),
+    ...mapActions(["openGlogalSetting"]),
+
+    rgbToRgba(color, alp=0.2) {
+      var r, g, b;
+      var rgbaAttr = color.match(/[\d.]+/g);
+      if (rgbaAttr.length >= 3) {
+        var r, g, b;
+        r = rgbaAttr[0];
+        g = rgbaAttr[1];
+        b = rgbaAttr[2];
+        let oldval = "rgba(" + r + "," + g + "," + b + "," + 1 + ")"
+        let newval = "rgba(" + r + "," + g + "," + b + "," + alp + ")"
+        return [oldval,newval];
+      }
+    },
     openSetting() {
-      this.openGlogalSetting()
+      this.openGlogalSetting();
     },
     Mini() {
       this.$ipcApi.send("windows-mini");
@@ -108,8 +110,19 @@ export default {
       this.$ipcApi.send("window-max");
       this.$ipcApi.on("window-confirm", (event, arg) => (this.mix = arg));
     },
-    Close() {
-      this.$ipcApi.send("window-close");
+    async Close() {
+      let flag = await isDownloading();
+      if (flag) {
+        this.$confirm("当前任务还在下载就退出吗？", "提示", {
+          confirmButtonText: "是的",
+          cancelButtonText: "再想想",
+          type: "warning",
+        }).then(() => {
+          this.$ipcApi.send("window-close");
+        });
+      } else {
+        this.$ipcApi.send("window-close");
+      }
     },
   },
 };
