@@ -85,7 +85,7 @@ export default {
   mounted() {},
 
   methods: {
-    ...mapActions(["openGlogalSetting"]),
+    ...mapActions(["toggleGlogalSetting"]),
 
     rgbToRgba(color, alp=0.2) {
       var r, g, b;
@@ -101,7 +101,7 @@ export default {
       }
     },
     openSetting() {
-      this.openGlogalSetting();
+      this.toggleGlogalSetting();
     },
     Mini() {
       this.$ipcApi.send("windows-mini");

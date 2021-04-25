@@ -4,6 +4,8 @@ const config = {
     strategy: [{ key: 1, name: 'javbus', strategy: '.nthread_firstpostbox img.zoom' }],
     currentStrategy: '',
     openSettingFlag: false,
+    editFlag: false,
+    checkCloseFlag: false,
     //当前全局设置 从 electronStore里拿，如果没有则采用默认配置
     globalSetting: getGlobalSetting() || {
       backgroudUrl: '',
@@ -30,11 +32,13 @@ const config = {
       all.splice(all.findIndex(ele => ele.key === data.key), 1)
       state.strategy = all
     },
-    OPEN_SETTING: (state) => {
-      state.openSettingFlag = true
-    },
-    CLOSE_SETTING: (state) => {
-      state.openSettingFlag = false
+    TOGGLE_SETTING: (state) => {
+      if (state.openSettingFlag && state.editFlag) {
+        state.checkCloseFlag = true
+      } else {
+        state.openSettingFlag = !state.openSettingFlag
+        state.checkCloseFlag = false
+      }
     },
     VIEW_CHANGE_BG: (state, data) => {
       state.globalSetting.backgroudUrl = data
@@ -47,40 +51,57 @@ const config = {
     },
     SAVE_GLOGAL_SETTING: (state, data) => {
       state.globalSetting = data
-    }
+    },
+    CHANGE_EDIT_FLAG: (state) => {
+      if (!state.editFlag) {
+        state.editFlag = !state.editFlag
+      }
+    },
+    CLEAR_CLOSE_FLAG: (state) => {
+      state.checkCloseFlag = false
+    },
+    CLEAR_EDIT_FLAG: (state) => {
+      state.editFlag = false
+    },
   },
   actions: {
-    addStrategy ({ commit, getters }, data) {
+    addStrategy({ commit, getters }, data) {
       commit('ADD_STRATEGY', data)
       setStrategy(getters.allStrategy)
     },
-    selectStrategy ({ commit }, data) {
+    selectStrategy({ commit }, data) {
       commit('SELECT_STRATEGY', data)
     },
-    editStrategy ({ commit, getters }, data) {
+    editStrategy({ commit, getters }, data) {
       commit('EDIT_STRATEGY', data)
       setStrategy(getters.allStrategy)
     },
-    delStrategy ({ commit, getters }, data) {
+    delStrategy({ commit, getters }, data) {
       commit('DEL_STRATEGY', data)
       setStrategy(getters.allStrategy)
     },
-    openGlogalSetting ({ commit }) {
-      commit('OPEN_SETTING')
+    toggleGlogalSetting({ commit }) {
+      commit('TOGGLE_SETTING')
     },
-    closeGlogalSetting ({ commit }) {
-      commit('CLOSE_SETTING')
-    },
-    viewChangeBG ({ commit, getters }, data) {
+    viewChangeBG({ commit, getters }, data) {
       commit('VIEW_CHANGE_BG', data)
+      commit('CHANGE_EDIT_FLAG')
     },
-    viewChangeTheme ({ commit, getters }, data) {
+    viewChangeTheme({ commit, getters }, data) {
       commit('VIEW_CHANGE_THEME', data)
+      commit('CHANGE_EDIT_FLAG') 
     },
-    changeSavePath ({ commit, getters }, data) {
+    changeSavePath({ commit, getters }, data) {
       commit('CHANGE_SAVEPATH', data)
+      commit('CHANGE_EDIT_FLAG')
     },
-    saveGlobalSetting ({ commit, getters }, data) {
+    clearCloseFlag({ commit, getters }, data) {
+      commit('CLEAR_CLOSE_FLAG')
+    },
+    clearEditFlag({ commit, getters }, data) {
+      commit('CLEAR_EDIT_FLAG')
+    },
+    saveGlobalSetting({ commit, getters }, data) {
       commit('SAVE_GLOGAL_SETTING', data)
     },
 

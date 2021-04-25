@@ -33,7 +33,7 @@
     <SettingModal
       :show="openSettingFlag"
       :onClose="
-        ()=>closeGlogalSetting()
+        ()=>toggleGlogalSetting()
       "
     />
     <EditStrategy :show="editStrategyShow" :onClose="
@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script>
+<script> 
 // import { searchUrl } from '@/utils/download'
 import { validateURL } from '@/utils/validate'
 import CreateModal from './file-manager/download/create'
@@ -69,7 +69,7 @@ export default {
     ...mapGetters(['openSettingFlag'])
   },
   methods: {
-    ...mapActions(['closeGlogalSetting']),
+    ...mapActions(['toggleGlogalSetting']),
     openStrategy () {
       this.editStrategyShow = true
     },
