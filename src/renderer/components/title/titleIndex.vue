@@ -3,7 +3,6 @@
   <div class="window-title" :style="themeStyle">
     <!-- 软件logo预留位置 -->
     <div style="-webkit-app-region: drag" class="logo">
-      <svg-icon icon-class="electron-logo"></svg-icon>
     </div>
     <!-- 菜单栏位置 -->
     <div></div>
@@ -143,7 +142,12 @@ export default {
     text-align: center;
   }
   .logo {
-    margin-left: 20px;
+    height: 25px;
+    width: 25px;
+    margin-left: 5px;
+    background-repeat:no-repeat;
+    background-size:100%;
+    background-image:url('../../../../static/iconimg.png')
   }
   .controls-container {
     display: flex;
