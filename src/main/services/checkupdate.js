@@ -12,7 +12,7 @@ function Message (mainWindow, type, data) {
 }
 
 export default {
-  Update (mainWindow) { 
+  Update (mainWindow) {
     // 设置地址要和package中的一样
     autoUpdater.setFeedURL('http://127.0.0.1:25565/')
 
