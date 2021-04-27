@@ -13,6 +13,7 @@ const getters = {
   backgroudUrl: state => state.config.globalSetting.backgroudUrl,
   themeColor: state => state.config.globalSetting.themeColor,
   firstCloseApp: state => state.config.globalSetting.firstCloseApp,
+  hideOrQuit: state => state.config.globalSetting.hideOrQuit,
   
 
 

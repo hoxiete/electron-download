@@ -1,5 +1,6 @@
 // store的字段数据以及store的默认值
 import {GlogalSetting} from '../../file-manager/interface'
+import {Schema} from 'electron-store'
 var schema = {
   setting: {
     type: 'object',
@@ -11,7 +12,7 @@ var schema = {
       hideOrQuit: true
     } as GlogalSetting,
   } 
-} as any
+} as Schema<Object>
 
 
 export default schema
