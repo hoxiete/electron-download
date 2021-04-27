@@ -174,7 +174,6 @@ const handleDownloadData = () => {
  * 判断是否在下载数据
  */
 export const isDownloading = ():boolean  => {
-  debugger
   downloadItemData = initDownloadData()
   let data = downloadItemData.filter(item=>item.state=='progressing')
   return data != undefined && Array.isArray(data) && data.length!=0

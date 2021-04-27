@@ -73,5 +73,7 @@ export interface IUpdateDownloadItem {
 export interface GlogalSetting {
   backgroudUrl: string,
   savePath: string,
-  themeColor: string
+  themeColor: string,
+  firstCloseApp: boolean,
+  hideOrQuit: boolean
 }

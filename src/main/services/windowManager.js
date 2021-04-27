@@ -1,10 +1,11 @@
-import { app ,BrowserWindow, Menu ,Tray } from 'electron'
+import { app, BrowserWindow, Menu, Tray, dialog } from 'electron'
 import menuconfig from '../config/menu'
 import config from '@config'
 import setIpc from './ipcMain'
 import upload from './checkupdate'
-import {isDownloading} from '../file-manager/download/index'
+import { isDownloading } from '../file-manager/download/index'
 import path from 'path'
+import { electron } from 'process'
 
 /**
  * Set `__static` path to static files in production
@@ -76,25 +77,44 @@ function createMainWindow() {
 
   if (process.env.NODE_ENV === 'development') mainWindow.webContents.openDevTools(true)
 
-  mainWindow.on('close', () => {
+  /***
+   * 关闭窗口前提示确认信息
+   */
+  mainWindow.on('close', async (e) => {
+    e.preventDefault(); //先阻止一下默认行为，不然直接关了，提示框只会闪一下
     let flag = await isDownloading();
+    debugger
     if (flag) {
-      this.$confirm("当前任务还在下载就退出吗？", "提示", {
-        confirmButtonText: "是的",
-        cancelButtonText: "再想想",
-        type: "warning",
-      }).then(() => {
-        mainWindow.close()
-      });
+      dialog.showMessageBox({
+        type: 'info',
+        title: 'Information',
+        cancelId: 2,
+        defaultId: 0,
+        message: '当前任务还在下载就退出吗？',
+        buttons: ['是的', '再想想']
+      }).then(result => {
+        if (result.response == 0) {
+          debugger
+          mainWindow = null;
+          // app.quit();	//不要用quit();试了会弹两次
+          app.exit();		//exit()直接关闭客户端，不会执行quit();
+          
+        } else if (result.response == 1) {
+          debugger
+          e.preventDefault();		//阻止默认行为，一定要有
+        }
+      })
     } else {
-      mainWindow.close()
+      debugger 
+      app.exit();	//不要用quit();试了会弹两次
     }
   })
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 
-  if(process.platform === 'win32'){
+  if (process.platform === 'win32') {
     //设置托盘图标和菜单
     var trayMenuTemplate = [
       {
@@ -107,12 +127,13 @@ function createMainWindow() {
         label: '退出',
         click: () => {
           // app.quit();
-          app.quit();//因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
+          mainWindow.close()
+          // app.quit();//因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
         }
       }
     ];
     //系统托盘图标
-    appTray = process.env.NODE_ENV === 'development' ?new Tray('build/icons/icon.ico'):new Tray(`${__dirname}/static/images/icon.ico`);
+    appTray = process.env.NODE_ENV === 'development' ? new Tray('build/icons/icon.ico') : new Tray(`${__dirname}/static/images/icon.ico`);
     //图标的上下文菜单
     const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
     //设置此托盘图标的悬停提示内容
@@ -120,7 +141,7 @@ function createMainWindow() {
     //设置此图标的上下文菜单
     appTray.setContextMenu(contextMenu);
     //单击右下角小图标显示应用左键
-    appTray.on('click',function(){
+    appTray.on('click', function () {
       mainWindow.show();
     })
     //右键

@@ -13,7 +13,7 @@ export function setGlobalSetting(obj: GlogalSetting) {
   electronStore.set(setting, obj)
 }
 export function getGlobalSetting(): GlogalSetting {
-  return electronStore.get(setting)
+  return electronStore.get(setting) as GlogalSetting
 }
 
 export function getsetting() {

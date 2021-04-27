@@ -1,5 +1,5 @@
 // store的字段数据以及store的默认值
-
+import {GlogalSetting} from '../../file-manager/interface'
 var schema = {
   setting: {
     type: 'object',
@@ -9,8 +9,8 @@ var schema = {
       themeColor: 'rgb(248, 9, 109)',
       firstCloseApp: true,
       hideOrQuit: true
-    },
-  }
+    } as GlogalSetting,
+  } 
 } as any
 
 
