@@ -57,10 +57,13 @@ const config = {
       state.checkCloseFlag = false
     },
     CLEAR_EDIT_FLAG: (state) => {
-      state.editFlag = false
+      state.editFlag = false 
     },
     SET_HIDEQUIT: (state,data) => {
       state.globalSetting.hideOrQuit = data
+    },
+    SET_FIRSTCLOSEAPP: (state) => {
+      state.globalSetting.firstCloseApp = false
     },
   },
   actions: {
@@ -106,12 +109,13 @@ const config = {
     setHideOrQuit({ commit, getters }, data) {
       commit('SET_HIDEQUIT', data)
       let setting = getGlobalSetting()
-      setGlobalSetting({...setting,"hideOrQuit":data,"firstCloseApp":false})
+      setGlobalSetting({...setting,"hideOrQuit":data})
     },
-    
-
-
-
+    setfirstCloseApp({ commit, getters }) {
+      commit('SET_FIRSTCLOSEAPP')
+      let setting = getGlobalSetting()
+      setGlobalSetting({...setting,"firstCloseApp":false})
+    },
 
   },
   // namespaced:true

@@ -83,30 +83,23 @@ function createMainWindow() {
   mainWindow.on('close', async (e) => {
     e.preventDefault(); //先阻止一下默认行为，不然直接关了，提示框只会闪一下
     let flag = await isDownloading();
-    debugger
     if (flag) {
-      dialog.showMessageBox({
-        type: 'info',
-        title: 'Information',
+      dialog.showMessageBox(mainWindow,{
+        type: 'none',
+        title: '消息',
+        icon: 'build/icons/icon.ico',
         cancelId: 2,
         defaultId: 0,
         message: '当前任务还在下载就退出吗？',
         buttons: ['是的', '再想想']
       }).then(result => {
         if (result.response == 0) {
-          debugger
           mainWindow = null;
-          // app.quit();	//不要用quit();试了会弹两次
-          app.exit();		//exit()直接关闭客户端，不会执行quit();
-          
-        } else if (result.response == 1) {
-          debugger
-          e.preventDefault();		//阻止默认行为，一定要有
+          app.exit();
         }
       })
     } else {
-      debugger 
-      app.exit();	//不要用quit();试了会弹两次
+      app.exit();
     }
   })
 

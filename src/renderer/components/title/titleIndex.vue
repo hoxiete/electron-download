@@ -81,11 +81,11 @@ export default {
       return `background-image: linear-gradient(to bottom,${rgba[0]} , ${rgba[1]})`;
     },
   },
-
-  mounted() {},
-
+  mounted() {
+    this.hideOrQuitData = this.hideOrQuit;
+  },
   methods: {
-    ...mapActions(["toggleGlogalSetting", "setHideOrQuit"]),
+    ...mapActions(["toggleGlogalSetting", "setHideOrQuit",'setfirstCloseApp']),
 
     rgbToRgba(color, alp = 0.2) {
       var r, g, b;
@@ -111,10 +111,9 @@ export default {
       this.$ipcApi.on("window-confirm", (event, arg) => (this.mix = arg));
     },
     async Close() {
+      // this.setfirstCloseApp();
       if (this.firstCloseApp) {
-        // if (true) {
         const h = this.$createElement;
-        debugger;
         let that = this;
         this.$msgbox({
           title: "首次关闭设置",
@@ -127,7 +126,7 @@ export default {
                 nativeOn: {
                   click(e) {
                     e.preventDefault();
-                    this.handleClick();
+                    that.handleClick(e);
                   },
                 },
               },
@@ -141,7 +140,7 @@ export default {
                 nativeOn: {
                   click(e) {
                     e.preventDefault();
-                    this.handleClick(e);
+                    that.handleClick(e);
                   },
                 },
               },
@@ -151,20 +150,17 @@ export default {
           showCancelButton: true,
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          beforeClose: (action, instance, done) => {
-            if (action === "confirm") {
-              this.setHideOrQuit(this.hideOrQuitData);
-              done();
+        })
+          .then(() => {
+            that.setHideOrQuit(that.hideOrQuitData);
+            that.setfirstCloseApp();
+            if (this.hideOrQuitData) {
+              this.$ipcApi.send("window-hide");
             } else {
-              done();
+              this.$ipcApi.send("window-close");
             }
-          },
-        }).then((action) => {
-          this.$message({
-            type: "info",
-            message: "action: " + action,
-          });
-        });
+          })
+          .catch(() => {});
       } else {
         if (this.hideOrQuit) {
           this.$ipcApi.send("window-hide");
@@ -180,8 +176,8 @@ export default {
       } else {
         value = e.target.parentNode.children[0].children[1]._value;
       }
-      if (that.hideOrQuitData === !value) {
-        that.hideOrQuitData = value;
+      if (this.hideOrQuitData === !value) {
+        this.hideOrQuitData = value;
         let node1 = document.getElementById("radio1").children[0];
         let node2 = document.getElementById("radio2").children[0];
         let swap = node1.className;
@@ -189,20 +185,6 @@ export default {
         node2.className = swap;
       }
     },
-    // this.$ipcApi.send("window-hide");
-    // let flag = await isDownloading();
-    // if (flag) {
-    //   this.$confirm("当前任务还在下载就退出吗？", "提示", {
-    //     confirmButtonText: "是的",
-    //     cancelButtonText: "再想想",
-    //     type: "warning",
-    //   }).then(() => {
-    //     this.$ipcApi.send("window-close");
-    //   });
-    // } else {
-    //   this.$ipcApi.send("window-close");
-    // }
-    //   },
   },
 };
 </script>
