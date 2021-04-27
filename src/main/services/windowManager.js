@@ -1,9 +1,9 @@
-import { BrowserWindow, Menu } from 'electron'
+import { app ,BrowserWindow, Menu ,Tray } from 'electron'
 import menuconfig from '../config/menu'
 import config from '@config'
 import setIpc from './ipcMain'
 import upload from './checkupdate'
-import DownloadUpdate from './downloadFile'
+import {isDownloading} from '../file-manager/download/index'
 import path from 'path'
 
 /**
@@ -19,8 +19,10 @@ const winURL = process.env.NODE_ENV === 'development' ? `http://localhost:${proc
 const loadingURL = process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}/static/loader.html` : `file://${__static}/loader.html`
 var loadWindow = null
 var mainWindow = null
+var appTray = null;
 
-function createMainWindow () {
+
+function createMainWindow() {
   /**
    * Initial window options
    */
@@ -30,11 +32,11 @@ function createMainWindow () {
     width: 1233,
     minWidth: 1200,
     show: false,
-    minimizable:true,
-    maximizable:true,
+    minimizable: true,
+    maximizable: true,
     titleBarStyle: 'hidden',
     frame: false,
-    icon:__dirname+'build/icons/icon.ico',
+    icon: __dirname + 'build/icons/icon.ico',
     // frame: config.IsUseSysTitle,
     titleBarStyle: 'hidden',
     webPreferences: {
@@ -74,12 +76,61 @@ function createMainWindow () {
 
   if (process.env.NODE_ENV === 'development') mainWindow.webContents.openDevTools(true)
 
+  mainWindow.on('close', () => {
+    let flag = await isDownloading();
+    if (flag) {
+      this.$confirm("当前任务还在下载就退出吗？", "提示", {
+        confirmButtonText: "是的",
+        cancelButtonText: "再想想",
+        type: "warning",
+      }).then(() => {
+        mainWindow.close()
+      });
+    } else {
+      mainWindow.close()
+    }
+  })
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  if(process.platform === 'win32'){
+    //设置托盘图标和菜单
+    var trayMenuTemplate = [
+      {
+        label: '打开',
+        click: () => {
+          mainWindow.show();
+        }
+      },
+      {
+        label: '退出',
+        click: () => {
+          // app.quit();
+          app.quit();//因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
+        }
+      }
+    ];
+    //系统托盘图标
+    appTray = process.env.NODE_ENV === 'development' ?new Tray('build/icons/icon.ico'):new Tray(`${__dirname}/static/images/icon.ico`);
+    //图标的上下文菜单
+    const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
+    //设置此托盘图标的悬停提示内容
+    appTray.setToolTip('lsp-download');
+    //设置此图标的上下文菜单
+    appTray.setContextMenu(contextMenu);
+    //单击右下角小图标显示应用左键
+    appTray.on('click',function(){
+      mainWindow.show();
+    })
+    //右键
+    appTray.on('right-click', () => {
+      appTray.popUpContextMenu(trayMenuTemplate);
+    });
+  };
 }
 
-function loadingWindow () {
+function loadingWindow() {
   loadWindow = new BrowserWindow({
     width: 400,
     height: 600,
@@ -104,12 +155,12 @@ function loadingWindow () {
   })
 }
 
-function initWindow () {
+function initWindow() {
   if (config.UseStartupChart) {
     return loadingWindow()
   } else {
     return createMainWindow()
   }
 }
-export {mainWindow as win} 
+export { mainWindow as win }
 export default initWindow

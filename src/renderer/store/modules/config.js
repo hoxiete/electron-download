@@ -6,12 +6,8 @@ const config = {
     openSettingFlag: false,
     editFlag: false,
     checkCloseFlag: false,
-    //当前全局设置 从 electronStore里拿，如果没有则采用默认配置
-    globalSetting: getGlobalSetting() || {
-      backgroudUrl: '',
-      savePath: '',
-      themeColor: 'rgb(248, 9, 109)'
-    },
+    //当前全局设置 从 electronStore里拿
+    globalSetting: getGlobalSetting()
   },
   mutations: {
     ADD_STRATEGY: (state, data) => {
@@ -63,6 +59,9 @@ const config = {
     CLEAR_EDIT_FLAG: (state) => {
       state.editFlag = false
     },
+    SET_HIDEQUIT: (state,data) => {
+      state.globalSetting.hideOrQuit = data
+    },
   },
   actions: {
     addStrategy({ commit, getters }, data) {
@@ -89,7 +88,7 @@ const config = {
     },
     viewChangeTheme({ commit, getters }, data) {
       commit('VIEW_CHANGE_THEME', data)
-      commit('CHANGE_EDIT_FLAG') 
+      commit('CHANGE_EDIT_FLAG')
     },
     changeSavePath({ commit, getters }, data) {
       commit('CHANGE_SAVEPATH', data)
@@ -104,6 +103,12 @@ const config = {
     saveGlobalSetting({ commit, getters }, data) {
       commit('SAVE_GLOGAL_SETTING', data)
     },
+    setHideOrQuit({ commit, getters }, data) {
+      commit('SET_HIDEQUIT', data)
+      let setting = getGlobalSetting()
+      setGlobalSetting({...setting,"hideOrQuit":data,"firstCloseApp":false})
+    },
+    
 
 
 

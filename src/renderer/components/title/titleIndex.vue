@@ -58,6 +58,7 @@ export default {
     visible: false,
     triggerType: "manual",
     permanent: false,
+    hideOrQuitData: true,
   }),
 
   components: { downloadIndex },
@@ -74,9 +75,9 @@ export default {
     // })
   },
   computed: {
-    ...mapGetters(["themeColor"]),
+    ...mapGetters(["themeColor", "firstCloseApp", "hideOrQuit"]),
     themeStyle() {
-      let rgba = this.rgbToRgba(this.themeColor,0.7)
+      let rgba = this.rgbToRgba(this.themeColor, 0.7);
       return `background-image: linear-gradient(to bottom,${rgba[0]} , ${rgba[1]})`;
     },
   },
@@ -84,9 +85,9 @@ export default {
   mounted() {},
 
   methods: {
-    ...mapActions(["toggleGlogalSetting"]),
+    ...mapActions(["toggleGlogalSetting", "setHideOrQuit"]),
 
-    rgbToRgba(color, alp=0.2) {
+    rgbToRgba(color, alp = 0.2) {
       var r, g, b;
       var rgbaAttr = color.match(/[\d.]+/g);
       if (rgbaAttr.length >= 3) {
@@ -94,9 +95,9 @@ export default {
         r = rgbaAttr[0];
         g = rgbaAttr[1];
         b = rgbaAttr[2];
-        let oldval = "rgba(" + r + "," + g + "," + b + "," + 1 + ")"
-        let newval = "rgba(" + r + "," + g + "," + b + "," + alp + ")"
-        return [oldval,newval];
+        let oldval = "rgba(" + r + "," + g + "," + b + "," + 1 + ")";
+        let newval = "rgba(" + r + "," + g + "," + b + "," + alp + ")";
+        return [oldval, newval];
       }
     },
     openSetting() {
@@ -110,19 +111,98 @@ export default {
       this.$ipcApi.on("window-confirm", (event, arg) => (this.mix = arg));
     },
     async Close() {
-      let flag = await isDownloading();
-      if (flag) {
-        this.$confirm("当前任务还在下载就退出吗？", "提示", {
-          confirmButtonText: "是的",
-          cancelButtonText: "再想想",
-          type: "warning",
-        }).then(() => {
-          this.$ipcApi.send("window-close");
+      if (this.firstCloseApp) {
+        // if (true) {
+        const h = this.$createElement;
+        debugger;
+        let that = this;
+        this.$msgbox({
+          title: "首次关闭设置",
+          message: h("div", null, [
+            h(
+              "el-radio",
+              {
+                props: { value: this.hideOrQuitData },
+                attrs: { label: true, id: "radio1" },
+                nativeOn: {
+                  click(e) {
+                    e.preventDefault();
+                    this.handleClick();
+                  },
+                },
+              },
+              "最小化"
+            ),
+            h(
+              "el-radio",
+              {
+                props: { value: this.hideOrQuitData },
+                attrs: { label: false, id: "radio2" },
+                nativeOn: {
+                  click(e) {
+                    e.preventDefault();
+                    this.handleClick(e);
+                  },
+                },
+              },
+              "退出"
+            ),
+          ]),
+          showCancelButton: true,
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          beforeClose: (action, instance, done) => {
+            if (action === "confirm") {
+              this.setHideOrQuit(this.hideOrQuitData);
+              done();
+            } else {
+              done();
+            }
+          },
+        }).then((action) => {
+          this.$message({
+            type: "info",
+            message: "action: " + action,
+          });
         });
       } else {
-        this.$ipcApi.send("window-close");
+        if (this.hideOrQuit) {
+          this.$ipcApi.send("window-hide");
+        } else {
+          this.$ipcApi.send("window-close");
+        }
       }
     },
+    handleClick(e) {
+      let value;
+      if (e.target.parentNode.children[1].value != undefined) {
+        value = e.target.parentNode.children[1]._value;
+      } else {
+        value = e.target.parentNode.children[0].children[1]._value;
+      }
+      if (that.hideOrQuitData === !value) {
+        that.hideOrQuitData = value;
+        let node1 = document.getElementById("radio1").children[0];
+        let node2 = document.getElementById("radio2").children[0];
+        let swap = node1.className;
+        node1.className = node2.className;
+        node2.className = swap;
+      }
+    },
+    // this.$ipcApi.send("window-hide");
+    // let flag = await isDownloading();
+    // if (flag) {
+    //   this.$confirm("当前任务还在下载就退出吗？", "提示", {
+    //     confirmButtonText: "是的",
+    //     cancelButtonText: "再想想",
+    //     type: "warning",
+    //   }).then(() => {
+    //     this.$ipcApi.send("window-close");
+    //   });
+    // } else {
+    //   this.$ipcApi.send("window-close");
+    // }
+    //   },
   },
 };
 </script>
@@ -145,9 +225,9 @@ export default {
     height: 25px;
     width: 25px;
     margin-left: 5px;
-    background-repeat:no-repeat;
-    background-size:100%;
-    background-image:url('../../../../static/iconimg.png')
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-image: url("../../../../static/iconimg.png");
   }
   .controls-container {
     display: flex;

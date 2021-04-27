@@ -1,7 +1,8 @@
 import { ipcMain, dialog } from 'electron'
 import Server from '../server/index'
+import { isDownloading } from '../file-manager/ipc-main'
 export default {
-  Mainfunc (mainWindow) {
+  Mainfunc(mainWindow) {
     ipcMain.on('IsUseSysTitle', (event) => {
       const data = IsUseSysTitle
       event.reply('CisUseSysTitle', data)
@@ -20,6 +21,10 @@ export default {
     })
     ipcMain.on('window-close', () => {
       mainWindow.close()
+    })
+
+    ipcMain.on('window-hide', () => {
+      mainWindow.hide()
     })
     ipcMain.on('open-messagebox', (event, arg) => {
       dialog.showMessageBox(mainWindow, {

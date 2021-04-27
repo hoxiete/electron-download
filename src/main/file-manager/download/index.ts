@@ -173,7 +173,7 @@ const handleDownloadData = () => {
 /**
  * 判断是否在下载数据
  */
-const isDownloading = ():boolean  => {
+export const isDownloading = ():boolean  => {
   debugger
   downloadItemData = initDownloadData()
   let data = downloadItemData.filter(item=>item.state=='progressing')
