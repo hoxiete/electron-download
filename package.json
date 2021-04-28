@@ -1,6 +1,6 @@
 {
-  "name": "myelectron",
-  "version": "0.0.3",
+  "name": "downloadpic",
+  "version": "0.0.4",
   "author": "zhanghao <787326576@qq.com>",
   "description": "An electron-vue project",
   "license": null,
@@ -49,7 +49,7 @@
     },
     "win": {
       "icon": "build/icons/icon.ico",
-      "target": "nsis"
+      "target": "squirrel"
     },
     "linux": {
       "target": "deb",
@@ -68,10 +68,12 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
+    "electron-log": "^4.3.4",
     "electron-store": "^7.0.1",
     "electron-updater": "^4.3.5",
     "element-ui": "^2.15.1",
     "node-fetch": "^2.6.1",
+    "update-electron-app": "^2.0.1",
     "vue": "^2.6.11",
     "vuex": "^3.6.0"
   },

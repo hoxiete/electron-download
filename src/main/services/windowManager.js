@@ -95,6 +95,8 @@ function createMainWindow() {
       }).then(result => {
         if (result.response == 0) {
           mainWindow = null;
+          app.quit()
+          app.exit();
           app.exit();
         }
       })
