@@ -8,6 +8,7 @@ node_js: "14"
 
 env:
   global:
+    - YARN_GPG=no
     - ELECTRON_CACHE=$HOME/.cache/electron
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
@@ -26,7 +27,12 @@ cache:
 install:
   - yarn install
 script:
+  - echo $TRAVIS_BUILD_DIR
   - yarn release
+deploy:
+  provider: releases
+  skip_cleanup: true
+  file: "*.exe"
 
 branches:
   only:
