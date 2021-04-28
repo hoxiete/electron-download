@@ -49,7 +49,7 @@
     },
     "win": {
       "icon": "build/icons/icon.ico",
-      "target": "squirrel"
+      "target": "nsis"
     },
     "linux": {
       "target": "deb",
@@ -73,7 +73,6 @@
     "electron-updater": "^4.3.5",
     "element-ui": "^2.15.1",
     "node-fetch": "^2.6.1",
-    "update-electron-app": "^2.0.1",
     "vue": "^2.6.11",
     "vuex": "^3.6.0"
   },

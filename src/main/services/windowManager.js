@@ -96,12 +96,10 @@ function createMainWindow() {
         if (result.response == 0) {
           mainWindow = null;
           app.quit()
-          app.exit();
-          app.exit();
         }
       })
     } else {
-      app.exit();
+      app.quit();
     }
   })
 

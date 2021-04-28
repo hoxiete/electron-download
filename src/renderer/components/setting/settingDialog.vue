@@ -43,6 +43,7 @@ export default {
   watch: {
     show(flag) {
       if (flag) {
+        // this.checkUpdate("one")
         this.loading = true;
         // let d = getsetting()
         let set = { ...this.globalSetting };
@@ -148,6 +149,63 @@ export default {
       } else {
         this.saveGlobalSetting(this.originData);
         this.onClose();
+      }
+    },
+    checkUpdate(data) {
+      switch (data) {
+        case "one":
+          const dialog = "";
+          this.$ipcApi.send("check-update");
+          console.log("启动检查");
+          this.$ipcApi.on("UpdateMsg", (event, data) => {
+            debugger
+            console.log(data);
+            switch (data.state) {
+              case -1:
+                const msgdata = {
+                  title: data.msg,
+                };
+                // api.MessageBox(dialog, msgdata);
+                break;
+              case 0:
+                this.$message("正在检查更新");
+                break;
+              case 1:
+                this.$message({
+                  type: "success",
+                  message: "已检查到新版本，开始下载",
+                });
+                this.dialogVisible = true;
+                break;
+              case 2:
+                this.$message({ type: "success", message: "无新版本" });
+                break;
+              case 3:
+                this.percentage = data.msg.percent.toFixed(1);
+                break;
+              case 4:
+                this.progressStaus = "success";
+                this.$alert("更新下载完成！", "提示", {
+                  confirmButtonText: "确定",
+                  callback: (action) => {
+                    this.$ipcApi.send("confirm-update");
+                  },
+                });
+                break;
+
+              default:
+                break;
+            }
+          });
+          break;
+        case "two":
+          console.log(111);
+          this.$ipcApi.send("start-download");
+
+          break;
+
+        default:
+          break;
       }
     },
   },

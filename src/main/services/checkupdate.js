@@ -14,10 +14,11 @@ function Message (mainWindow, type, data) {
 export default {
   Update (mainWindow) {
     // 设置地址要和package中的一样
-    autoUpdater.setFeedURL('http://127.0.0.1:25565/')
+    autoUpdater.setFeedURL('https://github.com/hoxiete/electron-download/releases/download/v0.0.3/downloadPic-Setup-0.0.3.exe')
 
     // 当更新发生错误的时候触发。
     autoUpdater.on('error', (err) => {
+      debugger
       console.log('更新出现错误')
       console.log(err.message)
       if (err.message.includes('sha512 checksum mismatch')) {
@@ -27,6 +28,7 @@ export default {
 
     // 当开始检查更新的时候触发
     autoUpdater.on('checking-for-update', (event, arg) => {
+      debugger
       console.log('开始检查更新')
       Message(mainWindow, 0)
     })
