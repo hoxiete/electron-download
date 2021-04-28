@@ -33,7 +33,7 @@ script:
 deploy:
   provider: releases
   skip_cleanup: true
-  file: "./build/*.exe"
+  file: "build/*.exe"
 
 branches:
   only:
