@@ -126,7 +126,7 @@ function createMainWindow() {
       }
     ];
     //系统托盘图标
-    appTray = process.env.NODE_ENV === 'development' ? new Tray('build/icons/icon.ico') : new Tray(`${__dirname}/static/images/icon.ico`);
+    appTray = process.env.NODE_ENV === 'development' ? new Tray('build/icons/icon.ico') : new Tray(`${__dirname}/static/icon.ico`);
     //图标的上下文菜单
     const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
     //设置此托盘图标的悬停提示内容
