@@ -16,7 +16,15 @@
       </el-form-item>
       <el-form-item label="检测新版本" class="downloadPath">
         <!-- <el-input readOnly :value="formData.savePath" style="width: 100px" /> -->
-        <el-button type="" @click="getUpdateVersion()" style="font-size: 18px;">{{appVersion}}</el-button>
+        <el-row>
+          <el-col :span="4">
+            <el-button type="" @click="getUpdateVersion()" style="font-size: 18px;">{{appVersion}}</el-button>
+          </el-col>
+          <el-col :span="13" style="padding-top: 12px;">
+            <el-progress v-if="percentage!=0" :percentage="percentage"  :text-inside="true" :stroke-width="24" :status="progressStaus"></el-progress>
+          </el-col>
+        </el-row>
+
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -70,7 +78,9 @@ export default {
     return {
       loading: false,
       originData: {},
-      appVersion:'',
+      appVersion: "",
+      percentage: 1,
+      progressStaus: "",
       formData: {
         backgroudUrl: "",
         savePath: "",
@@ -156,9 +166,11 @@ export default {
         this.onClose();
       }
     },
-    getAppVersion(){
-      this.$ipcApi.invoke("get-appversion",(res)=>
-      { debugger ;this.appVersion = res})
+    getAppVersion() {
+      this.$ipcApi.invoke("get-appversion", (res) => {
+        debugger;
+        this.appVersion = res;
+      });
     },
     getUpdateVersion(data) {
       data = "one";
@@ -175,7 +187,7 @@ export default {
                 const msgdata = {
                   title: data.msg,
                 };
-                // api.MessageBox(dialog, msgdata);
+                this.$message("尝试更新错误");
                 break;
               case 0:
                 this.$message("正在检查更新");
