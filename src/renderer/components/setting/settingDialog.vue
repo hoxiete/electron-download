@@ -174,6 +174,7 @@ export default {
     },
     getUpdateVersion(data) {
       data = "one";
+      let that = this
       switch (data) {
         case "one":
           const dialog = "";
@@ -210,7 +211,7 @@ export default {
                 this.$alert("更新下载完成！", "提示", {
                   confirmButtonText: "确定",
                   callback: (action) => {
-                    this.$ipcApi.send("confirm-update");
+                    that.$ipcApi.send("confirm-update");
                   },
                 });
                 break;

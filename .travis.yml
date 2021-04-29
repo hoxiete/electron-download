@@ -28,12 +28,14 @@ install:
   - yarn install
 script:
   - echo $TRAVIS_BUILD_DIR
-  - echo pwd
-  - yarn release
+  - yarn build:win64
+after_success:
+  - pwd
+  - echo success!!
+
 deploy:
   provider: releases
   skip_cleanup: true
-  file: "build/*.exe"
 
 branches:
   only:
