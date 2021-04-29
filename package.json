@@ -1,6 +1,6 @@
 {
   "name": "downloadpic",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "zhanghao <787326576@qq.com>",
   "description": "An electron-vue project",
   "license": null,
@@ -48,7 +48,6 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "publish": "github",
       "icon": "build/icons/icon.ico",
       "target": "nsis"
     },
