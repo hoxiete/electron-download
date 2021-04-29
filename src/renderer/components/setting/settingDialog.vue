@@ -79,8 +79,8 @@ export default {
       loading: false,
       originData: {},
       appVersion: "",
-      percentage: 1,
-      progressStaus: "",
+      percentage: 0,
+      progressStaus: undefined,
       formData: {
         backgroudUrl: "",
         savePath: "",
@@ -181,14 +181,9 @@ export default {
           this.$ipcApi.send("check-update");
           console.log("启动检查");
           this.$ipcApi.on("UpdateMsg", (event, data) => {
-            debugger;
-            console.log(data);
             switch (data.state) {
               case -1:
-                const msgdata = {
-                  title: data.msg,
-                };
-                this.$message("尝试更新错误");
+                this.$message(data.msg);
                 break;
               case 0:
                 this.$message("正在检查更新");
@@ -198,13 +193,12 @@ export default {
                   type: "success",
                   message: "已检查到新版本，开始下载",
                 });
-                this.dialogVisible = true;
                 break;
               case 2:
                 this.$message({ type: "success", message: "无新版本" });
                 break;
               case 3:
-                this.percentage = data.msg.percent.toFixed(1);
+                this.percentage = data.msg.percent;
                 break;
               case 4:
                 this.progressStaus = "success";

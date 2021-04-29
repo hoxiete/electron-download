@@ -49,8 +49,15 @@ export default {
     })
 
     // 下载监听
-    autoUpdater.on('download-progress', (progressObj) => {
-      Message(mainWindow, 3, progressObj)
+    autoUpdater.on('download-progress', (ProgressInfo) => {
+    //   ProgressInfo {
+    //     total: number;
+    //     delta: number;
+    //     transferred: number;
+    //     percent: number;
+    //     bytesPerSecond: number;
+    // }
+      Message(mainWindow, 3, ProgressInfo)
     })
 
     // 下载完成
@@ -66,7 +73,7 @@ export default {
     })
     // 渲染进程执行更新操作
     ipcMain.on('confirm-update', () => {
-      log.log('退出并更新', err)
+      log.log('退出并更新')
       autoUpdater.quitAndInstall()
     })
     ipcMain.handle('get-appversion',(e,args)=> {

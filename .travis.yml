@@ -7,10 +7,9 @@ language: node_js
 node_js: "14"
 
 env:
-  global:
-    #- YARN_GPG=no
-    - ELECTRON_CACHE=$HOME/.cache/electron
-    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+  - YARN_GPG=no
+  - ELECTRON_CACHE=$HOME/.cache/electron
+  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
 os:           #将会启动多个平台构建
   - windows
