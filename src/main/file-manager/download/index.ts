@@ -177,7 +177,6 @@ export const isDownloading = ():boolean  => {
   downloadItemData = initDownloadData()
   let data = downloadItemData.filter(item=>item.state=='progressing')
   return data != undefined && Array.isArray(data) && data.length!=0
-   
 }
 
 /**

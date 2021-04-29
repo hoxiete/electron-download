@@ -10,7 +10,7 @@ import './components/file-manager/download/style.module.less'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$download = require('./utils/StreamDownload').default
+// Vue.prototype.$download = require('./utils/StreamDownload').default
 Vue.prototype.$ipcApi = require('./utils/ipcRenderer').default
 
 Vue.component('svg-icon', SvgIcon)

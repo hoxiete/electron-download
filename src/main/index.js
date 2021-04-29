@@ -1,7 +1,6 @@
 'use strict'
 
 import { app } from 'electron'
-import updateApp from 'update-electron-app'
 import initWindow from './services/windowManager'
 import DisableButton from './config/DisableButton'
 import electronDevtoolsInstaller, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
@@ -20,12 +19,6 @@ function onAppReady() {
 
 app.isReady() ? onAppReady() : app.on('ready', onAppReady)
 
-//更新app
-updateApp({
-  repo: 'hoxiete/electron-download',
-  updateInterval: '5 minutes',
-  logger: require('electron-log')
-})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

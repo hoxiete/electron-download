@@ -14,6 +14,10 @@
         <el-input readOnly :value="formData.savePath" style="width: 373px" />
         <el-button type="primary" circle="" icon="el-icon-folder" @click="handleChoosePath()"></el-button>
       </el-form-item>
+      <el-form-item label="检测新版本" class="downloadPath">
+        <!-- <el-input readOnly :value="formData.savePath" style="width: 100px" /> -->
+        <el-button type="" @click="getUpdateVersion()" style="font-size: 18px;">{{appVersion}}</el-button>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="handleCancel">取 消</el-button>
@@ -43,7 +47,7 @@ export default {
   watch: {
     show(flag) {
       if (flag) {
-        // this.checkUpdate("one")
+        this.getAppVersion();
         this.loading = true;
         // let d = getsetting()
         let set = { ...this.globalSetting };
@@ -57,7 +61,7 @@ export default {
     },
     checkCloseFlag(flag) {
       if (flag) {
-        debugger
+        debugger;
         this.handleCancel();
       }
     },
@@ -66,6 +70,7 @@ export default {
     return {
       loading: false,
       originData: {},
+      appVersion:'',
       formData: {
         backgroudUrl: "",
         savePath: "",
@@ -108,9 +113,9 @@ export default {
         ...this.formData,
         savePath: newPath,
       };
-      this.changeSavePath(newPath); 
+      this.changeSavePath(newPath);
     },
-    // 选择背景图片 
+    // 选择背景图片
     async handleChooseFile() {
       //获取图片文件buffer 用于持久化
       const data = await chooseFileDialog();
@@ -132,33 +137,38 @@ export default {
     // 关闭对话框
     handleCancel() {
       //对复杂对象的比较 不能简单的使用===
-      if (!equarComplex(this.originData,this.formData)) {
-        this.clearCloseFlag()
+      if (!equarComplex(this.originData, this.formData)) {
+        this.clearCloseFlag();
         //还原设置
         this.$confirm("不保存修改就退出吗？", "提示", {
           confirmButtonText: "是的",
           cancelButtonText: "再想想",
-          type: "warning", 
-        }).then(() => {
-          this.clearEditFlag()
-          this.saveGlobalSetting(this.originData);
-          this.onClose();
-        }).catch(()=>{
-
-        });
+          type: "warning",
+        })
+          .then(() => {
+            this.clearEditFlag();
+            this.saveGlobalSetting(this.originData);
+            this.onClose();
+          })
+          .catch(() => {});
       } else {
         this.saveGlobalSetting(this.originData);
         this.onClose();
       }
     },
-    checkUpdate(data) {
+    getAppVersion(){
+      this.$ipcApi.invoke("get-appversion",(res)=>
+      { debugger ;this.appVersion = res})
+    },
+    getUpdateVersion(data) {
+      data = "one";
       switch (data) {
         case "one":
           const dialog = "";
           this.$ipcApi.send("check-update");
           console.log("启动检查");
           this.$ipcApi.on("UpdateMsg", (event, data) => {
-            debugger
+            debugger;
             console.log(data);
             switch (data.state) {
               case -1:

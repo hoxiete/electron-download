@@ -1,13 +1,17 @@
-import {ipcRenderer} from 'electron'
+import { ipcRenderer } from 'electron'
 
 export default {
-  send(data, arg, cb) {
-    ipcRenderer.send(data, arg)
+  send(eventName, arg) {
+    ipcRenderer.send(eventName, arg)
   },
-  on(data, arg, cb) {
-    ipcRenderer.on(data, arg)
+  on(eventName, arg) {
+    ipcRenderer.on(eventName, arg)
   },
-  remove(data) {
-    ipcRenderer.removeAllListeners(data)
+  //retrun promise
+  invoke(eventName, arg, cb) {
+    cb === undefined ? ipcRenderer.invoke(eventName).then(arg) : ipcRenderer.invoke(eventName, arg).then(cb)
+  },
+  remove(eventName) {
+    ipcRenderer.removeAllListeners(eventName)
   }
 }

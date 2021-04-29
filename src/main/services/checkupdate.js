@@ -1,5 +1,5 @@
 import { autoUpdater } from 'electron-updater'
-import { ipcMain } from 'electron'
+import {app, ipcMain } from 'electron'
 /**
  * -1 检查更新失败 0 正在检查更新 1 检测到新版本，准备下载 2 未检测到新版本 3 下载中 4 下载完成
  **/
@@ -14,7 +14,7 @@ function Message (mainWindow, type, data) {
 export default {
   Update (mainWindow) {
     // 设置地址要和package中的一样
-    autoUpdater.setFeedURL('https://github.com/hoxiete/electron-download/releases/download/v0.0.3/downloadPic-Setup-0.0.3.exe')
+    autoUpdater.setFeedURL('https://hazel-weld.vercel.app/')
 
     // 当更新发生错误的时候触发。
     autoUpdater.on('error', (err) => {
@@ -65,5 +65,13 @@ export default {
     ipcMain.on('confirm-update', () => {
       autoUpdater.quitAndInstall()
     })
+    ipcMain.handle('get-appversion',(e,args)=> {
+      if (process.env.NODE_ENV === 'development'){
+        return require("../../../package.json").version
+      }else{
+        return require("./package.json").version
+      }
+    }
+      )
   }
 }

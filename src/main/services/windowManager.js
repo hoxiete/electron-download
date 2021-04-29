@@ -66,8 +66,8 @@ function createMainWindow() {
   Menu.setApplicationMenu(null)
   mainWindow.loadURL(winURL)
 
-  setIpc.Mainfunc(mainWindow)  //没用
-  upload.Update(mainWindow)
+  setIpc.Mainfunc(mainWindow)  //调用方法建立了监听on
+  upload.Update(mainWindow)  //
   // DownloadUpdate.download(mainWindow) //下载功能有了 不需要
 
   mainWindow.webContents.once('dom-ready', () => {
@@ -95,11 +95,12 @@ function createMainWindow() {
       }).then(result => {
         if (result.response == 0) {
           mainWindow = null;
-          app.quit()
+          app.exit()
         }
       })
     } else {
-      app.quit();
+      mainWindow = null;
+      app.exit()
     }
   })
 
