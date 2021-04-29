@@ -8,7 +8,7 @@ node_js: "14"
 
 env:
   global:
-    - YARN_GPG=no
+    #- YARN_GPG=no
     - ELECTRON_CACHE=$HOME/.cache/electron
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 

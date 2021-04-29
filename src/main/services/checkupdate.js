@@ -14,7 +14,9 @@ function Message (mainWindow, type, data) {
 export default {
   Update (mainWindow) {
     // 设置地址要和package中的一样
-    autoUpdater.setFeedURL('https://hazel-weld.vercel.app/')
+    let updateHost = 'https://hazel-weld.vercel.app'
+    let url =`${updateHost}/update/${process.platform}/${app.getVersion()}`
+    autoUpdater.setFeedURL(url)
 
     // 当更新发生错误的时候触发。
     autoUpdater.on('error', (err) => {
