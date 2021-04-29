@@ -66,11 +66,11 @@ export default {
       autoUpdater.quitAndInstall()
     })
     ipcMain.handle('get-appversion',(e,args)=> {
-      if (process.env.NODE_ENV === 'development'){
+      // if (process.env.NODE_ENV === 'development'){
         return require("../../../package.json").version
-      }else{
-        return require("./package.json").version
-      }
+      // }else{
+      //   return require("./package.json").version
+      // }
     }
       )
   }
