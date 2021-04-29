@@ -28,17 +28,11 @@ install:
   - yarn install
 script:
   - echo $TRAVIS_BUILD_DIR
+  - echo $TRAVIS_REPO_SLUG
   - yarn release
 after_success:
   - echo after_success !!
 
-before_deploy:
-  - echo before_deploy !!
-deploy:
-  provider: releases
-  skip_cleanup: true
-after_deploy:
-  - echo after_deploy !!
 branches:
   only:
     - master
