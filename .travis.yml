@@ -28,7 +28,7 @@ install:
   - yarn install
 script:
   - echo $TRAVIS_BUILD_DIR
-  - yarn build:win64
+  - yarn release
 after_success:
   - echo after_success !!
 
