@@ -64,7 +64,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { getHtml4Url, parseHtml4Strategy } from '@/utils/download'
 import {
   retryDownloadFile,
-  getDownloadPath,
+  getSystemPath,
   newDownloadFile,
   openFileDialog,
   setLastDownloadPath,
@@ -81,14 +81,10 @@ export default {
     async show (val) {
       if (val) {
         this.loading = true
+        // let path = await getSystemPath("userData")
         getLastDownloadPath().then(path => this.formData.path = path)
         this.html = await getHtml4Url(this.searchUrl)
         this.loading = false
-        // this.formData = {
-        //   url: '',
-        //   fileName: '',
-        //   path: getDownloadPath()
-        // }
       }
     },
     currentStrategy (val) {

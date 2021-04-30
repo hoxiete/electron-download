@@ -7,9 +7,10 @@ language: node_js
 node_js: "14"
 
 env:
-  - YARN_GPG=no
-  - ELECTRON_CACHE=$HOME/.cache/electron
-  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+  glogal:
+    - YARN_GPG=no
+    - ELECTRON_CACHE=$HOME/.cache/electron
+    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
 os:           #将会启动多个平台构建
   - windows
@@ -18,10 +19,10 @@ os:           #将会启动多个平台构建
 
 cache:
   directories:
-  - node_modules
-  - $HOME/.cache/electron
-  - $HOME/.cache/electron-builder
-  - $HOME/.npm/_prebuilds
+    - node_modules
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+    - $HOME/.npm/_prebuilds
 
 install:
   - yarn install

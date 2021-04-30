@@ -10,6 +10,7 @@ export type IPCEventName =
   | 'openFileDialog'
   | 'chooseFileDialog'
   | 'getUrl4File'
+  | 'getSystemPath'
   | 'openFile'
   | 'isDownloading'
   | 'openFileInFolder'
@@ -23,6 +24,24 @@ export type IPCEventName =
   | 'setLastDownloadPath'
   | 'getLastDownloadPath'
 
+export type SystemPath = 'home'
+  | 'appData'
+  | 'userData'
+  | 'cache'
+  | 'temp'
+  | 'exe'
+  | 'module'
+  | 'desktop'
+  | 'documents'
+  | 'downloads'
+  | 'music'
+  | 'pictures'
+  | 'videos'
+  | 'recent'
+  | 'logs'
+  | 'pepperFlashSystemPlugin'
+  | 'crashDumps'
+  
 export interface INewDownloadFile {
   url: string
   fileName?: string
@@ -77,3 +96,4 @@ export interface GlogalSetting {
   firstCloseApp: boolean,
   hideOrQuit: boolean
 }
+

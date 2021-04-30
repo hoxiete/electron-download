@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { app, shell } from 'electron'
+import { SystemPath } from './interface';
 
 export { v4 as uuidV4 } from 'uuid'
 
@@ -65,6 +66,15 @@ export const removeFile = (path: string): void => {
   if (!isExistFile(path)) return
 
   fs.unlinkSync(path)
+}
+
+/**
+ * 获取系统路径
+ * @param path - 文件路径
+ */
+export const getSystemPath = (path: SystemPath): string => {
+  debugger
+  return app.getPath(path)
 }
 
 /**

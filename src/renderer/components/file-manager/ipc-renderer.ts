@@ -1,5 +1,6 @@
 import { ipcRenderer, IpcRendererEvent, remote } from 'electron'
 import {
+  SystemPath,
   IDownloadFile,
   INewDownloadFile,
   IPagination,
@@ -30,9 +31,9 @@ export const ipcRendererInvoke = <T>(eventName: IPCEventName, ...args: any[]): P
   ipcRenderer.invoke(eventName, ...args)
 
 /**
- * 获取下载路径
+ * 获取系统路径
  */
-export const getDownloadPath = (): string => remote.app.getPath('downloads')
+export const getSystemPath = (path: SystemPath): Promise<string> => ipcRendererInvoke('getSystemPath', path)
 
 /**
  * 打开文件

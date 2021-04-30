@@ -57,6 +57,7 @@ export default {
       if (flag) {
         this.getAppVersion();
         this.loading = true;
+        // debugger
         // let d = getsetting()
         let set = { ...this.globalSetting };
         if (set != undefined) {

@@ -1,8 +1,6 @@
 import { app, BrowserWindow, session, dialog, WebContents, DownloadItem } from 'electron'
-
-// import { createBrowserWindow } from '../../browser-window'
-import { IDownloadFile, INewDownloadFile, IPagination } from '../interface'
-import { getFileName, isExistFile, openFile, readFile, openFileInFolder, pathJoin, removeFile, uuidV4 } from '../util'
+import { IDownloadFile, INewDownloadFile, IPagination, SystemPath } from '../interface';
+import { getFileName, isExistFile,getSystemPath , openFile, readFile, openFileInFolder, pathJoin, removeFile, uuidV4 } from '../util'
 import { ipcMainHandle } from '../ipc-main'
 import { win } from '../../../main/services/windowManager'
 import {
@@ -355,6 +353,9 @@ const listenerEvent = () => {
   //从路径获取文件资源url
   ipcMainHandle('getUrl4File', (event, path: string) => getUrl4File(path))
 
+  // 打开文件
+  ipcMainHandle('getSystemPath', (event, path: SystemPath) => getSystemPath(path))
+  
   // 打开文件
   ipcMainHandle('openFile', (event, path: string) => openFile(path))
 
