@@ -93,7 +93,11 @@ export interface GlogalSetting {
   backgroudUrl: string,
   savePath: string,
   themeColor: string,
-  firstCloseApp: boolean,
   hideOrQuit: boolean
+}
+
+export interface defalutSetting {
+  setting: GlogalSetting,
+  firstCloseApp: boolean
 }
 

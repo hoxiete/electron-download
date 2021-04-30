@@ -1,4 +1,4 @@
-import { setStrategy, getStrategy, setGlobalSetting, getGlobalSetting } from '../../utils/electronStoreUtil'
+import { setStrategy, getStrategy, setGlobalSetting, getGlobalSetting,setFirstClose,getFirstClose,restoreGlobalSetting } from '../../utils/electronStoreUtil'
 const config = {
   state: {
     strategy: [{ key: 1, name: 'javbus', strategy: '.nthread_firstpostbox img.zoom' }],
@@ -6,6 +6,7 @@ const config = {
     openSettingFlag: false,
     editFlag: false,
     checkCloseFlag: false,
+    firstCloseApp: getFirstClose(),
     //当前全局设置 从 electronStore里拿
     globalSetting: getGlobalSetting()
   },
@@ -63,7 +64,10 @@ const config = {
       state.globalSetting.hideOrQuit = data
     },
     SET_FIRSTCLOSEAPP: (state) => {
-      state.globalSetting.firstCloseApp = false
+      state.firstCloseApp = false
+    },
+    RESTORE_DEFAULT_SETTING: (state) => {
+      state.firstCloseApp = false
     },
   },
   actions: {
@@ -113,9 +117,13 @@ const config = {
     },
     setfirstCloseApp({ commit, getters }) {
       commit('SET_FIRSTCLOSEAPP')
-      let setting = getGlobalSetting()
-      setGlobalSetting({...setting,"firstCloseApp":false})
+      setFirstClose()
     },
+    restoreDefaultSetting({commit}){
+      let data = restoreGlobalSetting()
+      debugger
+      commit('SAVE_GLOGAL_SETTING', data)
+    }
 
   },
   // namespaced:true

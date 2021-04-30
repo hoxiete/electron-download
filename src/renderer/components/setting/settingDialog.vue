@@ -14,6 +14,12 @@
         <el-input readOnly :value="formData.savePath" style="width: 373px" />
         <el-button type="primary" circle="" icon="el-icon-folder" @click="handleChoosePath()"></el-button>
       </el-form-item>
+      <el-form-item label="点击关闭操作：" class="downloadPath">
+        <el-radio-group v-model="formData.hideOrQuit">
+          <el-radio :label="true">最小化</el-radio>
+          <el-radio :label="false">退出</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="检测新版本" class="downloadPath">
         <!-- <el-input readOnly :value="formData.savePath" style="width: 100px" /> -->
         <el-row>
@@ -21,7 +27,8 @@
             <el-button type="" @click="getUpdateVersion()" style="font-size: 18px;">{{appVersion}}</el-button>
           </el-col>
           <el-col :span="13" style="padding-top: 12px;">
-            <el-progress v-if="percentage!=0" :percentage="percentage"  :text-inside="true" :stroke-width="24" :status="progressStaus"></el-progress>
+            <el-progress v-if="percentage!=0" :percentage="percentage" :text-inside="true" :stroke-width="24"
+              :status="progressStaus"></el-progress>
           </el-col>
         </el-row>
 
@@ -57,20 +64,21 @@ export default {
       if (flag) {
         this.getAppVersion();
         this.loading = true;
-        // debugger
-        // let d = getsetting()
-        let set = { ...this.globalSetting };
-        if (set != undefined) {
+        debugger;
+        let d = getsetting().get("setting")
+        this.restoreDefaultSetting()
+        let f = getsetting().get("setting")
+        let setting = { ...this.globalSetting };
+        if (setting != undefined) {
           // this.formData = this.originData = {...set}  //这样写会让这两个数据双向绑定。影响后续比对操作
-          this.formData = { ...set };
-          this.originData = { ...set };
+          this.formData = { ...setting };
+          this.originData = { ...setting };
         }
         this.loading = false;
       }
     },
     checkCloseFlag(flag) {
       if (flag) {
-        debugger;
         this.handleCancel();
       }
     },
@@ -86,6 +94,7 @@ export default {
         backgroudUrl: "",
         savePath: "",
         themeColor: "",
+        hideOrQuit: false,
       },
       predefineColors: [
         "#ff4500",
@@ -106,7 +115,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["globalSetting", "editFlag", "checkCloseFlag"]),
+    ...mapGetters(["globalSetting", "checkCloseFlag"]),
   },
   methods: {
     ...mapActions([
@@ -116,6 +125,7 @@ export default {
       "clearCloseFlag",
       "clearEditFlag",
       "saveGlobalSetting",
+      "restoreDefaultSetting"
     ]),
     // 选择保存位置
     async handleChoosePath() {
@@ -142,6 +152,7 @@ export default {
     },
     // 保存
     handleOk() {
+      this.saveGlobalSetting(this.formData);
       setGlobalSetting(this.formData);
       this.onClose();
     },
@@ -169,13 +180,12 @@ export default {
     },
     getAppVersion() {
       this.$ipcApi.invoke("get-appversion", (res) => {
-        debugger;
         this.appVersion = res;
       });
     },
     getUpdateVersion(data) {
       data = "one";
-      let that = this
+      let that = this;
       switch (data) {
         case "one":
           const dialog = "";
