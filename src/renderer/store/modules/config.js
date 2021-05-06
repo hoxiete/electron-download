@@ -121,7 +121,6 @@ const config = {
     },
     restoreDefaultSetting({commit}){
       let data = restoreGlobalSetting()
-      debugger
       commit('SAVE_GLOGAL_SETTING', data)
     }
 

@@ -64,10 +64,9 @@ export default {
       if (flag) {
         this.getAppVersion();
         this.loading = true;
-        debugger;
-        let d = getsetting().get("setting")
-        this.restoreDefaultSetting()
-        let f = getsetting().get("setting")
+        // let d = getsetting().get("setting")
+        // this.restoreDefaultSetting()
+        // let f = getsetting().get("setting")
         let setting = { ...this.globalSetting };
         if (setting != undefined) {
           // this.formData = this.originData = {...set}  //这样写会让这两个数据双向绑定。影响后续比对操作
