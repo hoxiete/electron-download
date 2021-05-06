@@ -212,7 +212,7 @@ export default {
                 break;
               case 4:
                 this.progressStaus = "success";
-                this.$alert("更新下载完成！", "提示", {
+                this.$alert("更新下载完成！是否安装", "提示", {
                   confirmButtonText: "确定",
                   callback: (action) => {
                     that.$ipcApi.send("confirm-update");
